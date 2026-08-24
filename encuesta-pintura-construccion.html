@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>Encuesta de Satisfacción — Grupo Silva</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1f3a 0%, #2c3e50 50%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -15%;
+            right: -8%;
+            width: 800px;
+            height: 800px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280"><defs><radialGradient id="dropGrad" cx="30%25" cy="30%25"><stop offset="0%25" style="stop-color:%23ffffff;stop-opacity:0.15" /><stop offset="100%25" style="stop-color:%23e74c3c;stop-opacity:0.05" /></radialGradient></defs><path d="M100 20C120 45, 180 120, 180 180C180 230, 150 280, 100 280C50 280, 20 230, 20 180C20 120, 80 45, 100 20Z" fill="url(%23dropGrad)" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/></svg>');
+            background-repeat: no-repeat;
+            background-size: contain;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.8;
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px 24px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+            margin-top: -16px;
+        }
+
+        .logo-svg {
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 20px;
+            display: block;
+            filter: drop-shadow(0 4px 8px rgba(44, 62, 80, 0.15));
+        }
+
+        .header-text {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header-text h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header-text p {
+            font-size: 15px;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+
+        .separator {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #e74c3c, transparent);
+            margin-bottom: 32px;
+            border-radius: 2px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .form-group label {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .form-group label .required {
+            color: #e74c3c;
+            font-weight: 700;
+            margin-left: 2px;
+        }
+
+        .form-group.hidden {
+            display: none;
+        }
+
+        .scale-group {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .scale-group input[type="radio"] {
+            display: none;
+        }
+
+        .scale-group label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 6px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            background: white;
+            color: #666;
+            transition: all 0.2s ease;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .scale-group label:hover {
+            transform: translateY(-2px);
+            border-width: 2.5px;
+        }
+
+        .scale-group input[value="1"] + label,
+        .scale-group input[value="2"] + label {
+            border-color: #e74c3c;
+            background: #fff5f3;
+        }
+
+        .scale-group input[value="1"]:checked + label,
+        .scale-group input[value="2"]:checked + label {
+            background: #e74c3c;
+            color: white;
+            border-color: #e74c3c;
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        }
+
+        .scale-group input[value="3"] + label,
+        .scale-group input[value="4"] + label {
+            border-color: #f39c12;
+            background: #fffbf0;
+        }
+
+        .scale-group input[value="3"]:checked + label,
+        .scale-group input[value="4"]:checked + label {
+            background: #f39c12;
+            color: white;
+            border-color: #f39c12;
+            box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+        }
+
+        .scale-group input[value="5"] + label {
+            border-color: #27ae60;
+            background: #f0fdf4;
+        }
+
+        .scale-group input[value="5"]:checked + label {
+            background: #27ae60;
+            color: white;
+            border-color: #27ae60;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+
+        .yes-no-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .yes-no-group input[type="radio"] {
+            display: none;
+        }
+
+        .yes-no-group label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 6px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            background: white;
+            color: #666;
+            transition: all 0.2s ease;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .yes-no-group label:hover {
+            transform: translateY(-2px);
+            border-width: 2.5px;
+        }
+
+        .yes-no-group input[value="Si"] + label {
+            border-color: #27ae60;
+            background: #f0fdf4;
+        }
+
+        .yes-no-group input[value="Si"]:checked + label {
+            background: #27ae60;
+            color: white;
+            border-color: #27ae60;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+
+        .yes-no-group input[value="No"] + label,
+        .yes-no-group input[value*="No"] + label {
+            border-color: #e74c3c;
+            background: #fff5f3;
+        }
+
+        .yes-no-group input[value="No"]:checked + label,
+        .yes-no-group input[value*="No"]:checked + label {
+            background: #e74c3c;
+            color: white;
+            border-color: #e74c3c;
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        }
+
+        .multiple-choice {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .multiple-choice input[type="radio"] {
+            display: none;
+        }
+
+        .multiple-choice label {
+            display: flex;
+            align-items: center;
+            padding: 12px 14px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            background: white;
+            color: #666;
+            transition: all 0.2s ease;
+            margin: 0;
+        }
+
+        .multiple-choice label:hover {
+            transform: translateX(4px);
+            border-width: 2.5px;
+        }
+
+        .multiple-choice input[type="radio"]:checked + label {
+            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+            color: white;
+            border-color: #2c3e50;
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
+        }
+
+        .multiple-choice input[type="radio"]:checked + label::before {
+            content: "✓ ";
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        textarea {
+            font-family: inherit;
+            font-size: 14px;
+            padding: 14px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 110px;
+            color: #2c3e50;
+            transition: all 0.2s ease;
+            background: white;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.1);
+        }
+
+        textarea::placeholder {
+            color: #bdc3c7;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit {
+            flex: 1;
+            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(44, 62, 80, 0.25);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(44, 62, 80, 0.35);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .btn-reset {
+            flex: 0.4;
+            background: #ecf0f1;
+            color: #2c3e50;
+            border: 2px solid #ddd;
+        }
+
+        .btn-reset:hover {
+            border-color: #e74c3c;
+            background: #fff5f3;
+            color: #e74c3c;
+        }
+
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border: 2px solid #28a745;
+            border-radius: 12px;
+            padding: 32px 24px;
+            margin-bottom: 24px;
+            color: #155724;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .progress-indicator {
+            text-align: center;
+            font-size: 12px;
+            color: #95a5a6;
+            margin-top: 24px;
+            font-weight: 500;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 24px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 16px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e8e8e8;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 16px;
+            font-family: inherit;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: #e74c3c;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .modal-buttons button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-buttons .btn-ok {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .modal-buttons .btn-ok:hover {
+            background: #1a252f;
+        }
+
+        .modal-buttons .btn-cancel {
+            background: #ecf0f1;
+            color: #2c3e50;
+            border: 2px solid #ddd;
+        }
+
+        .modal-buttons .btn-cancel:hover {
+            border-color: #e74c3c;
+        }
+
+        @media (max-width: 540px) {
+            body { padding: 12px; }
+            .container { padding: 32px 20px; }
+            .logo-svg { width: 130px; height: 90px; }
+            .header-text h1 { font-size: 24px; }
+            .scale-group label, .yes-no-group label { padding: 12px 6px; font-size: 13px; }
+            .multiple-choice label { padding: 12px 12px; font-size: 12px; }
+            button { padding: 12px 20px; font-size: 13px; }
+        }
+
+        @media (max-width: 380px) {
+            .container { padding: 24px 16px; }
+            .button-group { flex-direction: column; gap: 10px; }
+            button { width: 100%; flex: 1; }
+            .btn-reset { flex: 1; }
+        }
+
+        @media print {
+            body { background: white; }
+            body::before { display: none; }
+            .container { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="logo-section">
+                <img class="logo-img" src="https://i.ibb.co/VYKCx3C5/silva-innovando-la-construccin-logo.jpg" alt="Grupo Silva" />
+            </div>
+
+            <div class="header-text">
+                <h1>¿Cómo fue tu experiencia?</h1>
+                <p>Tu opinión nos ayuda a mejorar</p>
+            </div>
+
+            <div class="separator"></div>
+
+            <div class="success-message" id="successMessage">
+                <strong>✓ ¡Gracias por tu tiempo!</strong><br>Tu opinión nos ayuda a mejorar cada experiencia. Un gusto tenerte como cliente de Grupo Silva.
+            </div>
+
+            <form id="encuestaForm">
+                <!-- P1: Bienvenida -->
+                <div class="form-group" id="p1-group">
+                    <label>Cuando entraste, ¿te sentiste bienvenido? <span class="required">*</span></label>
+                    <div class="yes-no-group">
+                        <input type="radio" id="p1_si" name="p1_bienvenida" value="Si" required>
+                        <label for="p1_si">Sí</label>
+
+                        <input type="radio" id="p1_no" name="p1_bienvenida" value="No">
+                        <label for="p1_no">No</label>
+                    </div>
+                </div>
+
+                <!-- P1B: Motivo no bienvenido (branching) -->
+                <div class="form-group hidden" id="p1b-group">
+                    <label>¿Qué pasó? <span class="required">*</span></label>
+                    <div class="multiple-choice">
+                        <input type="radio" id="p1b_ignorado" name="p1b_razon" value="Me ignoraron">
+                        <label for="p1b_ignorado">Me ignoraron</label>
+
+                        <input type="radio" id="p1b_mala_onda" name="p1b_razon" value="Mala predisposición">
+                        <label for="p1b_mala_onda">Mala predisposición</label>
+
+                        <input type="radio" id="p1b_desorden" name="p1b_razon" value="Local desordenado">
+                        <label for="p1b_desorden">El local estaba desordenado</label>
+
+                        <input type="radio" id="p1b_otro" name="p1b_razon" value="Otro motivo" onclick="openOtroModal1()">
+                        <label for="p1b_otro">Otro motivo</label>
+                    </div>
+                </div>
+
+                <!-- P2: Orden y Limpieza -->
+                <div class="form-group" id="p2-group">
+                    <label>¿Te pareció que el local estaba ordenado y limpio? <span class="required">*</span></label>
+                    <div class="scale-group">
+                        <input type="radio" id="p2_1" name="p2_orden" value="1" required>
+                        <label for="p2_1">1</label>
+                        <input type="radio" id="p2_2" name="p2_orden" value="2">
+                        <label for="p2_2">2</label>
+                        <input type="radio" id="p2_3" name="p2_orden" value="3">
+                        <label for="p2_3">3</label>
+                        <input type="radio" id="p2_4" name="p2_orden" value="4">
+                        <label for="p2_4">4</label>
+                        <input type="radio" id="p2_5" name="p2_orden" value="5">
+                        <label for="p2_5">5</label>
+                    </div>
+                </div>
+
+                <!-- P3: Encontrar productos -->
+                <div class="form-group" id="p3-group">
+                    <label>¿Encontraste todo lo que viniste a buscar? <span class="required">*</span></label>
+                    <div class="multiple-choice">
+                        <input type="radio" id="p3_si" name="p3_encontro" value="Si - todo" required>
+                        <label for="p3_si">Sí, encontré todo</label>
+                        <input type="radio" id="p3_parcial" name="p3_encontro" value="Parcial - algo">
+                        <label for="p3_parcial">Encontré parte de lo que buscaba</label>
+                        <input type="radio" id="p3_no" name="p3_encontro" value="No - nada">
+                        <label for="p3_no">No encontré lo que buscaba</label>
+                    </div>
+                </div>
+
+                <!-- P4: Razón no encontró -->
+                <div class="form-group hidden" id="p4-group">
+                    <label>¿Qué pasó? <span class="required">*</span></label>
+                    <div class="multiple-choice">
+                        <input type="radio" id="p4_stock" name="p4_razon" value="No había stock">
+                        <label for="p4_stock">No había stock</label>
+                        <input type="radio" id="p4_ubicacion" name="p4_razon" value="No lo encontré en el local">
+                        <label for="p4_ubicacion">No lo encontré en el local</label>
+                        <input type="radio" id="p4_orientacion" name="p4_razon" value="No sabía dónde estaba">
+                        <label for="p4_orientacion">No sabía dónde estaba y nadie me orientó</label>
+                        <input type="radio" id="p4_precio" name="p4_razon" value="Precio muy alto">
+                        <label for="p4_precio">El precio era muy alto</label>
+                        <input type="radio" id="p4_otro" name="p4_razon" value="Otro motivo" onclick="openOtroModal()">
+                        <label for="p4_otro">Otro motivo</label>
+                    </div>
+                </div>
+
+                <!-- P5: Asesoramiento -->
+                <div class="form-group" id="p5-group">
+                    <label>¿Cómo calificas el asesoramiento brindado? <span class="required">*</span></label>
+                    <div class="scale-group">
+                        <input type="radio" id="p5_1" name="p5_asesoramiento" value="1" required>
+                        <label for="p5_1">1</label>
+                        <input type="radio" id="p5_2" name="p5_asesoramiento" value="2">
+                        <label for="p5_2">2</label>
+                        <input type="radio" id="p5_3" name="p5_asesoramiento" value="3">
+                        <label for="p5_3">3</label>
+                        <input type="radio" id="p5_4" name="p5_asesoramiento" value="4">
+                        <label for="p5_4">4</label>
+                        <input type="radio" id="p5_5" name="p5_asesoramiento" value="5">
+                        <label for="p5_5">5</label>
+                    </div>
+                </div>
+
+                <!-- P6: Tiempo espera -->
+                <div class="form-group" id="p6-group">
+                    <label>¿Cuánto tuviste que esperar para ser atendido? <span class="required">*</span></label>
+                    <div class="multiple-choice">
+                        <input type="radio" id="p6_inmediato" name="p6_espera" value="Inmediato" required>
+                        <label for="p6_inmediato">Fue inmediato</label>
+                        <input type="radio" id="p6_poco" name="p6_espera" value="Pocos minutos">
+                        <label for="p6_poco">Pocos minutos</label>
+                        <input type="radio" id="p6_mucho" name="p6_espera" value="Bastante tiempo">
+                        <label for="p6_mucho">Bastante tiempo (fue molesto)</label>
+                        <input type="radio" id="p6_demasiado" name="p6_espera" value="Demasiado">
+                        <label for="p6_demasiado">Demasiado tiempo (casi me voy)</label>
+                    </div>
+                </div>
+
+                <!-- P7: Experiencia caja -->
+                <div class="form-group" id="p7-group">
+                    <label>¿Cómo fue la experiencia en caja? <span class="required">*</span></label>
+                    <div class="scale-group">
+                        <input type="radio" id="p7_1" name="p7_caja" value="1" required>
+                        <label for="p7_1">1</label>
+                        <input type="radio" id="p7_2" name="p7_caja" value="2">
+                        <label for="p7_2">2</label>
+                        <input type="radio" id="p7_3" name="p7_caja" value="3">
+                        <label for="p7_3">3</label>
+                        <input type="radio" id="p7_4" name="p7_caja" value="4">
+                        <label for="p7_4">4</label>
+                        <input type="radio" id="p7_5" name="p7_caja" value="5">
+                        <label for="p7_5">5</label>
+                    </div>
+                </div>
+
+                <!-- P8: Retiro mercadería -->
+                <div class="form-group" id="p8-group">
+                    <label>¿Te entregaron la mercadería bien y sin demoras? <span class="required">*</span></label>
+                    <div class="yes-no-group">
+                        <input type="radio" id="p8_si" name="p8_retiro" value="Si" required>
+                        <label for="p8_si">Sí</label>
+                        <input type="radio" id="p8_no" name="p8_retiro" value="No, tuve que esperar">
+                        <label for="p8_no">No, tuve que esperar</label>
+                    </div>
+                </div>
+
+                <!-- P9: Volvería y Recomendaría (escala 1-5) -->
+                <div class="form-group" id="p9-group">
+                    <label>¿Volverías a comprar acá y nos la recomendarías? <span class="required">*</span></label>
+                    <div class="scale-group">
+                        <input type="radio" id="p9_1" name="p9_volver_recomendar" value="1" required>
+                        <label for="p9_1">1</label>
+                        <input type="radio" id="p9_2" name="p9_volver_recomendar" value="2">
+                        <label for="p9_2">2</label>
+                        <input type="radio" id="p9_3" name="p9_volver_recomendar" value="3">
+                        <label for="p9_3">3</label>
+                        <input type="radio" id="p9_4" name="p9_volver_recomendar" value="4">
+                        <label for="p9_4">4</label>
+                        <input type="radio" id="p9_5" name="p9_volver_recomendar" value="5">
+                        <label for="p9_5">5</label>
+                    </div>
+                </div>
+
+                <!-- P10: Pregunta abierta -->
+                <div class="form-group" id="p10-group">
+                    <label>¿Querés contarnos algo más?</label>
+                    <small style="color: #95a5a6; font-weight: 500;">Si pudieras cambiar una sola cosa, ¿cuál sería? (opcional)</small>
+                    <textarea id="p10" name="p10_comentario" placeholder="Tu comentario aquí..."></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn-submit">Enviar →</button>
+                    <button type="reset" class="btn-reset">Limpiar</button>
+                </div>
+            </form>
+
+            <div class="progress-indicator">
+                Tus datos son anónimos y seguros
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para "Otro" en P4 -->
+    <div id="otroModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">¿Cuál fue el motivo?</div>
+            <input type="text" id="otroTexto" class="modal-input" placeholder="Cuéntanos qué pasó...">
+            <div class="modal-buttons">
+                <button type="button" class="btn-cancel" onclick="closeOtroModal()">Cancelar</button>
+                <button type="button" class="btn-ok" onclick="guardarOtro()">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para "Otro" en P1B -->
+    <div id="otroModal1" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">¿Cuál fue el motivo?</div>
+            <input type="text" id="otroTexto1" class="modal-input" placeholder="Cuéntanos qué pasó...">
+            <div class="modal-buttons">
+                <button type="button" class="btn-cancel" onclick="closeOtroModal1()">Cancelar</button>
+                <button type="button" class="btn-ok" onclick="guardarOtro1()">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('encuestaForm');
+        const successMessage = document.getElementById('successMessage');
+        const otroModal = document.getElementById('otroModal');
+        const otroTexto = document.getElementById('otroTexto');
+        const otroModal1 = document.getElementById('otroModal1');
+        const otroTexto1 = document.getElementById('otroTexto1');
+
+        function openOtroModal() {
+            otroModal.style.display = 'block';
+            otroTexto.focus();
+        }
+
+        function closeOtroModal() {
+            otroModal.style.display = 'none';
+            otroTexto.value = '';
+            document.getElementById('p4_otro').checked = false;
+        }
+
+        function guardarOtro() {
+            if (otroTexto.value.trim()) {
+                otroModal.style.display = 'none';
+                document.getElementById('p4_otro').value = 'Otro: ' + otroTexto.value;
+                document.getElementById('p4_otro').checked = true;
+            } else {
+                alert('Por favor, escribe qué pasó.');
+            }
+        }
+
+        function openOtroModal1() {
+            otroModal1.style.display = 'block';
+            otroTexto1.focus();
+        }
+
+        function closeOtroModal1() {
+            otroModal1.style.display = 'none';
+            otroTexto1.value = '';
+            document.getElementById('p1b_otro').checked = false;
+        }
+
+        function guardarOtro1() {
+            if (otroTexto1.value.trim()) {
+                otroModal1.style.display = 'none';
+                document.getElementById('p1b_otro').value = 'Otro: ' + otroTexto1.value;
+                document.getElementById('p1b_otro').checked = true;
+            } else {
+                alert('Por favor, escribe qué pasó.');
+            }
+        }
+
+        otroTexto.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') guardarOtro();
+        });
+
+        otroTexto1.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') guardarOtro1();
+        });
+
+        // Branching P1
+        document.querySelectorAll('input[name="p1_bienvenida"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const p1bGroup = document.getElementById('p1b-group');
+                if (this.value === 'No') {
+                    p1bGroup.classList.remove('hidden');
+                    document.querySelectorAll('#p1b-group input[type="radio"]').forEach(r => r.required = true);
+                } else {
+                    p1bGroup.classList.add('hidden');
+                    document.querySelectorAll('#p1b-group input[type="radio"]').forEach(r => {
+                        r.required = false;
+                        r.checked = false;
+                    });
+                }
+            });
+        });
+
+        // Branching P3
+        document.querySelectorAll('input[name="p3_encontro"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const p4Group = document.getElementById('p4-group');
+                if (this.value !== 'Si - todo') {
+                    p4Group.classList.remove('hidden');
+                    document.querySelectorAll('#p4-group input[type="radio"]').forEach(r => r.required = true);
+                } else {
+                    p4Group.classList.add('hidden');
+                    document.querySelectorAll('#p4-group input[type="radio"]').forEach(r => {
+                        r.required = false;
+                        r.checked = false;
+                    });
+                }
+            });
+        });
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const requiredFields = form.querySelectorAll('[required]');
+            let allValid = true;
+
+            requiredFields.forEach(field => {
+                if (field.type === 'radio') {
+                    const fieldGroup = form.querySelectorAll(`input[name="${field.name}"]`);
+                    const isChecked = Array.from(fieldGroup).some(input => !input.parentElement.closest('.hidden') && input.checked);
+                    if (!isChecked) allValid = false;
+                }
+            });
+
+            if (!allValid) {
+                alert('Por favor, completa todas las preguntas antes de enviar.');
+                return;
+            }
+
+            form.style.display = 'none';
+            successMessage.classList.add('show');
+            
+            const formData = new FormData(form);
+            console.log('Datos:', Object.fromEntries(formData));
+
+            setTimeout(() => {
+                form.reset();
+                form.style.display = 'flex';
+                successMessage.classList.remove('show');
+                document.getElementById('p1b-group').classList.add('hidden');
+                document.getElementById('p4-group').classList.add('hidden');
+                otroTexto.value = '';
+                otroTexto1.value = '';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 3500);
+        });
+
+        window.onclick = function(event) {
+            if (event.target == otroModal) closeOtroModal();
+            if (event.target == otroModal1) closeOtroModal1();
+        }
+    </script>
+</body>
+</html>

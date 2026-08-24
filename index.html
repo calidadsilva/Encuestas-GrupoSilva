@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuestas Grupo Silva</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1f3a 0%, #2c3e50 50%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 48px 32px;
+            max-width: 700px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, #1a293e 0%, #2c3e50 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(44, 62, 80, 0.2);
+        }
+
+        .logo img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .separator {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #e74c3c, transparent);
+            margin: 32px 0;
+            border-radius: 2px;
+        }
+
+        .encuestas-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .encuesta-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            background: white;
+        }
+
+        .encuesta-card:hover {
+            border-color: #e74c3c;
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.15);
+            transform: translateX(4px);
+        }
+
+        .encuesta-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .encuesta-card:nth-child(1) .encuesta-icon {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+        }
+
+        .encuesta-card:nth-child(2) .encuesta-icon {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+        }
+
+        .encuesta-card:nth-child(3) .encuesta-icon {
+            background: linear-gradient(135deg, #f39c12 0%, #d68910 100%);
+            color: white;
+        }
+
+        .encuesta-card:nth-child(4) .encuesta-icon {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+        }
+
+        .encuesta-info h3 {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .encuesta-info p {
+            font-size: 13px;
+            color: #95a5a6;
+            line-height: 1.4;
+        }
+
+        .arrow {
+            margin-left: auto;
+            font-size: 20px;
+            color: #e74c3c;
+            transition: transform 0.3s ease;
+        }
+
+        .encuesta-card:hover .arrow {
+            transform: translateX(4px);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid #e8e8e8;
+            color: #95a5a6;
+            font-size: 13px;
+        }
+
+        @media (max-width: 540px) {
+            .container {
+                padding: 32px 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .encuesta-card {
+                padding: 16px;
+            }
+
+            .encuesta-info h3 {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="https://i.ibb.co/VYKCx3C5/silva-innovando-la-construccin-logo.jpg" alt="Grupo Silva">
+            </div>
+            <h1>Grupo Silva</h1>
+            <p class="subtitle">Centro de Encuestas de Satisfacción</p>
+        </div>
+
+        <div class="separator"></div>
+
+        <div class="encuestas-grid">
+            <a href="encuesta-entrega-0km.html" class="encuesta-card">
+                <div class="encuesta-icon">🏍️</div>
+                <div class="encuesta-info">
+                    <h3>Entrega 0km</h3>
+                    <p>Encuesta de satisfacción para clientes en entrega de motos</p>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+            <a href="encuesta-sucursal-colon.html" class="encuesta-card">
+                <div class="encuesta-icon">🏪</div>
+                <div class="encuesta-info">
+                    <h3>Sucursal Colón</h3>
+                    <p>Encuesta de satisfacción general de la sucursal</p>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+            <a href="encuesta-pintura-construccion.html" class="encuesta-card">
+                <div class="encuesta-icon">🎨</div>
+                <div class="encuesta-info">
+                    <h3>Pintura y Construcción</h3>
+                    <p>Encuesta anónima para sucursales de pintura y construcción</p>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+
+            <a href="registro-politica.html" class="encuesta-card">
+                <div class="encuesta-icon">📋</div>
+                <div class="encuesta-info">
+                    <h3>Registro de Política</h3>
+                    <p>Registro de política de recepción y aprovisionamiento</p>
+                </div>
+                <div class="arrow">→</div>
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>✓ Tus datos son anónimos y seguros</p>
+            <p style="margin-top: 8px;">Centro de Calidad — Grupo Silva</p>
+        </div>
+    </div>
+</body>
+</html>
