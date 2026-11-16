@@ -1,0 +1,28 @@
+GRUPO SILVA · Registro por QR con ruleta (evento 25/11)
+
+ARCHIVOS
+gwm.html, changan.html, triumph.html
+                 Una página por marca: es la que abre el cliente al escanear el QR de ese stand.
+pantalla-gwm.html, pantalla-changan.html, pantalla-triumph.html
+                 Vista para la tele de cada stand, con su QR y su contador de participantes.
+config.js        Acá va la URL de Apps Script. Es el único archivo que hay que editar.
+apps-script.gs   Código para la planilla de Google Sheets (las instrucciones están arriba, en el mismo archivo).
+qr/              Un QR por marca: versión A5 lista para imprimir y versión suelta.
+
+PUESTA EN MARCHA
+1. Crear la planilla y pegar apps-script.gs siguiendo los pasos que figuran al inicio de ese archivo.
+2. Pegar la URL /exec en config.js.
+3. Subir la carpeta completa al repositorio Encuestas-GrupoSilva con el nombre "evento".
+   Los QR apuntan a https://calidadsilva.github.io/Encuestas-GrupoSilva/evento/gwm.html (y changan.html, triumph.html)
+   Si la carpeta se sube con otro nombre o en otro sitio, hay que regenerar los QR.
+4. Probar un registro completo desde un celular y verificar que la fila aparece en la hoja Leads.
+
+RULETA FÍSICA O DIGITAL
+Se elige en la planilla, hoja Config, celda B1: fisica o digital. Los QR son los mismos.
+Con "digital", los premios, el stock y la probabilidad se cargan en la hoja Premios, por marca.
+
+LEADS
+Todos caen en la hoja Leads con la columna Marca. Una persona puede jugar una vez en cada stand.
+
+PREGUNTAS
+Se editan al comienzo del script de cada página (gwm.html, changan.html, triumph.html), en el bloque MARCAS.
