@@ -115,6 +115,11 @@ table.tb th{color:var(--muted);font-size:12.5px}
 .rec-b{display:flex;gap:8px;flex-wrap:wrap}.rec-b .btn{flex:1 1 140px}
 .rec-bar{height:10px;background:var(--soft);border-radius:6px;overflow:hidden;margin:8px 0}.rec-bar i{display:block;height:100%;background:var(--yel);transition:width .3s}
 body.rec-on main{padding-bottom:210px}
+.calma{position:fixed;inset:0;z-index:60;background:#0a0d13;color:#7d8699;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px}
+.calma[hidden]{display:none}.calma-in{display:flex;flex-direction:column;align-items:center;gap:14px}
+.calma .rec-time{font-size:52px;color:#9aa3b6;font-weight:400}.calma-st{font-size:14px;letter-spacing:.08em;text-transform:uppercase}.calma-p{margin:0;font-size:13px;max-width:280px}
+.calma-b{display:flex;gap:10px;margin-top:18px}.calma-b .btn{background:transparent;color:#9aa3b6;border:1px solid #2a3140;min-width:120px}
+
 </style></head>
 <body>
 <header class="bar"><div class="bar-in">
@@ -636,18 +641,18 @@ window.addEventListener('beforeunload',function(e){if(R.est==='grabando'||R.est=
 function pintar(){
   var activo=R.est==='grabando'||R.est==='pausa';
   document.body.classList.toggle('rec-on',R.est!=='cerrado');
-  panel.hidden=R.est==='cerrado';
-  lanz.className='tab rec-launch'+(activo?' on':'');
-  lanz.innerHTML=activo?'<i class="dot'+(R.est==='grabando'?' pulse':'')+'"></i> '+fmt(dur()):'<i class="dot"></i> Grabar';
+  panel.hidden=R.est==='cerrado';panel.className=activo?'calma':'rec';
+  lanz.className='tab rec-launch';
+  lanz.innerHTML=activo?'<i class="dot"></i> '+fmt(dur()):'<i class="dot"></i> Grabar';
   if(R.est==='cerrado'){panel.innerHTML='';return}
   var h='<div class="rec-in">';
   if(R.est==='listo-para-grabar'){
     h+='<div class="rec-t"><b>Grabar reunión</b></div><p class="rec-p">Avisá a los presentes que se está grabando. El audio se guarda en tu carpeta de entrada y se procesa solo.'+(demo()?' <b>Modo prueba:</b> no se envía a Drive.':'')+'</p>'+(R.err?'<p class="rec-e">'+esc(R.err)+'</p>':'')+
        '<div class="rec-b"><button class="btn pri" type="button" data-rec="empezar"><i class="dot"></i> Empezar a grabar</button><button class="btn" type="button" data-rec="cerrar">Cancelar</button></div>';
   }else if(activo){
-    h+='<div class="rec-t"><span class="rec-st"><i class="dot'+(R.est==='grabando'?' pulse':'')+'"></i> '+(R.est==='grabando'?'Grabando':'En pausa')+'</span><b class="rec-time" id="rec-time">'+fmt(dur())+'</b></div>'+
-       '<p class="rec-p small">Se está grabando la reunión. Dejá la pantalla encendida y esta pestaña abierta. '+(R.sid?'Ya subidos '+mb(R.subidos)+'.':'')+(R.err?' <span class="rec-e">'+esc(R.err)+'</span>':'')+'</p>'+
-       '<div class="rec-b"><button class="btn" type="button" data-rec="pausa">'+(R.est==='grabando'?'Pausar':'Seguir')+'</button><button class="btn pri" type="button" data-rec="detener">Detener y guardar</button></div>';
+    h='<div class="calma-in"><span class="calma-st">'+(R.est==='grabando'?'Grabando':'En pausa')+'</span><b class="rec-time" id="rec-time">'+fmt(dur())+'</b>'+
+       '<p class="calma-p">'+(R.err?esc(R.err):'Dejá esta pestaña abierta.')+(R.sid?' · Subidos '+mb(R.subidos):'')+'</p>'+
+       '<div class="calma-b"><button class="btn" type="button" data-rec="pausa">'+(R.est==='grabando'?'Pausar':'Seguir')+'</button><button class="btn" type="button" data-rec="detener">Detener y guardar</button></div></div>';
   }else if(R.est==='subiendo'){
     var pc=R.total?Math.min(99,Math.round(R.subidos*100/R.total)):0;
     h+='<div class="rec-t"><b>Guardando el audio…</b><span>'+pc+'%</span></div><div class="rec-bar"><i style="width:'+pc+'%"></i></div><p class="rec-p small">No cierres esta pestaña hasta que termine.</p>';
@@ -658,7 +663,7 @@ function pintar(){
     h+='<div class="rec-t"><b>No se pudo guardar en Drive</b></div><p class="rec-p"><span class="rec-e">'+esc(R.err)+'</span> La grabación sigue en este dispositivo. Descargá la copia para no perderla.</p>'+
        '<div class="rec-b"><button class="btn pri" type="button" data-rec="copia">Descargar copia</button><button class="btn" type="button" data-rec="reintentar">Reintentar subida</button><button class="btn" type="button" data-rec="cerrar">Cerrar</button></div>';
   }
-  panel.innerHTML=h+'</div>';
+  panel.innerHTML=activo?h:h+'</div>';
 }
 function tictac(){var e=$('#rec-time');if(e)e.textContent=fmt(dur());if(lanz&&(R.est==='grabando'||R.est==='pausa'))lanz.lastChild&&(lanz.lastChild.textContent=' '+fmt(dur()))}
 
