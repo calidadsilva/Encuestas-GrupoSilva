@@ -99,6 +99,23 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
 @keyframes gwin{from{opacity:0;filter:blur(calc(var(--u)*1))}to{opacity:1;filter:none}}
 @media (prefers-reduced-motion:reduce){.gw-glow{animation:none}}
 
+/* juego de luces */
+.gw-beams,.gw-shine{position:absolute;border-radius:50%;pointer-events:none}
+.gw-beams{inset:-34%;background:repeating-conic-gradient(from 0deg,rgba(47,123,255,0) 0deg 8deg,rgba(47,123,255,.55) 13deg 15deg,rgba(47,123,255,0) 21deg 30deg);-webkit-mask-image:radial-gradient(circle closest-side,#000 36%,transparent 100%);mask-image:radial-gradient(circle closest-side,#000 36%,transparent 100%);mix-blend-mode:screen;opacity:.7;animation:gwspin 16s linear infinite}
+.gw-beams.b2{background:repeating-conic-gradient(from 10deg,rgba(247,197,49,0) 0deg 14deg,rgba(247,197,49,.5) 19deg 21deg,rgba(224,36,45,0) 27deg 45deg);animation:gwspin 23s linear infinite reverse;opacity:.55}
+@keyframes gwspin{to{transform:rotate(360deg)}}
+.gw.m-armed .gw-beams{animation-duration:5s;opacity:1;background:repeating-conic-gradient(from 0deg,rgba(224,36,45,0) 0deg 8deg,rgba(224,36,45,.7) 13deg 15deg,rgba(224,36,45,0) 21deg 30deg)}
+.gw.m-armed .gw-beams.b2{animation-duration:7s;opacity:.9}
+.gw.m-spin .gw-beams{animation-duration:3s;opacity:1}.gw.m-spin .gw-beams.b2{animation-duration:4s;opacity:.9}
+.gw.m-win .gw-beams{animation-duration:2.4s;opacity:1;background:repeating-conic-gradient(from 0deg,rgba(247,197,49,0) 0deg 8deg,rgba(247,197,49,.8) 13deg 15deg,rgba(255,255,255,0) 21deg 30deg)}
+.gw.m-win .gw-beams.b2{animation-duration:3s;opacity:1}
+.gw.m-np .gw-beams{opacity:.35}.gw.m-np .gw-beams.b2{opacity:.2}
+.gw-shine{inset:0;background:conic-gradient(from 0deg,transparent 0deg 292deg,rgba(255,255,255,.28) 338deg,transparent 360deg);-webkit-mask-image:radial-gradient(circle closest-side,transparent 33%,#000 35%,#000 79%,transparent 81%);mask-image:radial-gradient(circle closest-side,transparent 33%,#000 35%,#000 79%,transparent 81%);mix-blend-mode:screen;animation:gwspin 5.5s linear infinite}
+.gw.m-armed .gw-shine{animation-duration:1.6s}.gw.m-spin .gw-shine{animation-duration:1s}.gw.m-win .gw-shine{animation-duration:1.4s}
+.gw-glow{transition:filter .4s}
+.gw.m-armed .gw-glow{background:radial-gradient(circle,rgba(224,36,45,.55) 0%,rgba(247,197,49,.2) 42%,transparent 66%)}
+.gw.m-win .gw-glow{background:radial-gradient(circle,rgba(247,197,49,.6) 0%,rgba(47,123,255,.2) 45%,transparent 68%)}
+
 </style>
 </head>
 <body>
@@ -237,6 +254,7 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
     this.idleSpeed = opt.idleSpeed == null ? 5 : opt.idleSpeed;
     this.lastIdx = -1;
     this.onTick = opt.onTick || null;
+    this.fxMode = 'idle'; this.fxI = 0; this.waves = []; this.stars = []; this.result = null; this._tm = 0; this._pulse = 0; this._nextBeat = 0; this._nextWave = 0; this._surge = opt.surge == null ? 0 : opt.surge;
     this._build();
     this._draw();
     var self = this;
@@ -251,11 +269,12 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
     var r = this.root, self = this;
     r.classList.add('gw');
     r.style.setProperty('--acc', this.accent);
-    r.innerHTML = '<div class="gw-glow"></div><canvas class="gw-ring"></canvas><canvas class="gw-face"></canvas>' +
-      '<canvas class="gw-needle"></canvas><div class="gw-hub"></div>';
-    ['gw-ring', 'gw-face', 'gw-needle'].forEach(function (c) {
-      var el = r.querySelector('.' + c); el.width = el.height = self.res; self[c.replace('gw-', '')] = el;
+    r.innerHTML = '<div class="gw-glow"></div><div class="gw-beams"></div><div class="gw-beams b2"></div><canvas class="gw-ring"></canvas><canvas class="gw-face"></canvas>' +
+      '<div class="gw-shine"></div><canvas class="gw-fx"></canvas><canvas class="gw-needle"></canvas><div class="gw-hub"></div>';
+    ['gw-ring', 'gw-face', 'gw-fx', 'gw-needle'].forEach(function (c) {
+      var el = r.querySelector('.' + c); el.width = el.height = (c === 'gw-fx' ? Math.min(self.res, 900) : self.res); self[c.replace('gw-', '')] = el;
     });
+    r.classList.add('m-idle');
     var fit = function () { r.style.setProperty('--u', (r.clientWidth / 100) + 'px'); };
     fit();
     if (window.ResizeObserver) new ResizeObserver(fit).observe(r); else window.addEventListener('resize', fit);
@@ -341,14 +360,97 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
     this.needle.style.transform = 'rotate(' + (-this.angle) + 'deg)';
     var idx = Math.floor((((-this.angle % 360) + 360) % 360) / this.segDeg);
     if (idx !== this.lastIdx) {
-      if (this.lastIdx !== -1 && this.mode === 'play' && this.onTick) this.onTick();
+      if (this.lastIdx !== -1 && this.mode === 'play' && this._p && this._p.phase === 'spin' && this.onTick) this.onTick();
       this.lastIdx = idx;
     }
   };
+  Wheel.prototype._setFx = function (m) {
+    if (this.fxMode === m) return;
+    var r = this.root;
+    r.classList.remove('m-' + this.fxMode); this.fxMode = m; r.classList.add('m-' + m);
+  };
   Wheel.prototype._frame = function (t) {
-    var dt = Math.min(0.1, (t - this._last) / 1000); this._last = t;
-    if (this.mode === 'idle') { this.angle += this.idleSpeed * dt; this._apply(); }
-    else if (this.mode === 'play') this._playFrame();
+    var dt = Math.min(0.1, (t - this._last) / 1000); this._last = t; this._tm += dt;
+    if (this.mode === 'idle') {
+      var sp = this.idleSpeed + this._surge * Math.pow(Math.max(0, Math.sin(this._tm * 0.5)), 2);
+      this.angle += sp * dt; this._apply(); this._setFx('idle');
+    } else if (this.mode === 'play') this._playFrame();
+    else if (this.mode === 'hold') this._setFx(this.result || 'idle');
+    this._fxDraw(dt);
+  };
+
+  /* ---------- Juego de luces ---------- */
+  Wheel.prototype._spawnWave = function (col, dur) { this.waves.push({ t0: this._tm, col: col, dur: dur || 1.5 }); if (this.waves.length > 8) this.waves.shift(); };
+  Wheel.prototype._fxDraw = function (dt) {
+    var c = this.fxc || this.fx, x = c.getContext('2d'), R = c.width / 2, m = this.fxMode, I = this.fxI, t = this._tm, i, N = 72, self = this;
+    x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, c.width, c.height); x.translate(R, R);
+    this._pulse = Math.max(0, this._pulse - dt * 3.2);
+
+    /* ondas que salen del centro */
+    if (t >= this._nextWave) {
+      var ev = { idle: [2.4, BL], hold: [2.4, BL], armed: [0.9 - 0.5 * I, I > 0.55 ? RD : YE], spin: [0.5, BL], win: [0.3, YE], np: [2.2, BL] }[m] || [2.4, BL];
+      if (m !== 'armed') { this._spawnWave(ev[1], m === 'win' ? 1.2 : 1.8); this._nextWave = t + ev[0]; } else this._nextWave = t + 9;
+    }
+    this.waves = this.waves.filter(function (w) { return t - w.t0 < w.dur; });
+    this.waves.forEach(function (w) {
+      var k = (t - w.t0) / w.dur, rr = R * (0.29 + 0.71 * k);
+      x.save(); x.globalAlpha = Math.pow(1 - k, 1.6) * 0.7; x.strokeStyle = w.col; x.shadowColor = w.col; x.shadowBlur = R * 0.05; x.lineWidth = R * (0.004 + 0.014 * (1 - k));
+      x.beginPath(); x.arc(0, 0, rr, 0, TAU); x.stroke(); x.restore();
+    });
+
+    /* destello del centro con cada latido */
+    if (this._pulse > 0.02 || m === 'win') {
+      var pa = m === 'win' ? 0.25 + 0.25 * Math.abs(Math.sin(t * 9)) : this._pulse * 0.55;
+      var g = x.createRadialGradient(0, 0, R * 0.2, 0, 0, R * 0.95); var cc = m === 'win' ? '247,197,49' : (I > 0.55 ? '224,36,45' : '247,197,49');
+      g.addColorStop(0, 'rgba(' + cc + ',' + pa + ')'); g.addColorStop(1, 'rgba(' + cc + ',0)');
+      x.fillStyle = g; x.beginPath(); x.arc(0, 0, R * 0.95, 0, TAU); x.fill();
+    }
+
+    /* lamparitas del bisel */
+    var head, tail, col, b, k, pat = (m === 'idle' || m === 'hold') ? Math.floor(t / 4.5) % 5 : -1;
+    var PAL = [BL, YE, RD];
+    function mix(u) { u = ((u % 1) + 1) % 1 * 3; var a = PAL[Math.floor(u) % 3], bb = PAL[(Math.floor(u) + 1) % 3], f = u - Math.floor(u); return f < 0.5 ? a : bb; }
+    for (i = 0; i < N; i++) {
+      col = BL; b = 0.25;
+      if (m === 'armed') {
+        head = t * (1.5 + 5 * I) * N; tail = (((head - i) % N) + N) % N; b = Math.max(tail < 14 ? 1 - tail / 14 : 0, Math.random() < 0.08 * I ? 1 : 0.18 + 0.2 * this._pulse);
+        col = I > 0.55 ? (i % 2 ? RD : YE) : YE;
+      } else if (m === 'spin') {
+        head = t * 4 * N; tail = (((head - i) % N) + N) % N; var tail2 = (((head + N / 2 - i) % N) + N) % N;
+        b = Math.max(tail < 16 ? 1 - tail / 16 : 0, tail2 < 16 ? 1 - tail2 / 16 : 0, 0.3); col = tail2 < 16 && tail >= 16 ? YE : BL;
+      } else if (m === 'win') {
+        var ph = Math.floor(t * 9); b = ((i + ph) % 2) ? 1 : 0.35; col = ((i + ph) % 6 < 2) ? '#ffffff' : ((i % 2) ? YE : BL);
+      } else if (m === 'np') {
+        b = 0.3 + 0.25 * Math.sin(t * 3 + i * 0.12);
+      } else if (pat === 0) { head = t * 0.8 * N; tail = (((head - i) % N) + N) % N; b = tail < 20 ? 1 - tail / 20 : 0.12; col = mix(t / 9);
+      } else if (pat === 1) { b = ((i + Math.floor(t * 3)) % 2) ? 1 : 0.15; col = (i % 2) ? YE : BL;
+      } else if (pat === 2) { b = 0.85; col = mix(i / N + t * 0.35);
+      } else if (pat === 3) { b = Math.sin(i * 12.9898 + Math.floor(t * 8) * 78.233) > 0.82 ? 1 : 0.12; col = (i % 3 === 0) ? RD : (i % 3 === 1 ? YE : '#fff');
+      } else { k = (i / N * 3 + t * 0.7) % 1; b = k < 0.5 ? 1 : 0.15; col = mix(Math.floor(i / N * 3) / 3 + t * 0.1); }
+      var a = t * 0, ang = i / N * TAU - Math.PI / 2, rr = R * 0.968;
+      x.save(); x.globalAlpha = 0.2 + 0.8 * b; x.fillStyle = col;
+      if (b > 0.55) { x.shadowColor = col; x.shadowBlur = R * 0.04; }
+      x.beginPath(); x.arc(Math.cos(ang) * rr, Math.sin(ang) * rr, R * (0.009 + 0.008 * b), 0, TAU); x.fill(); x.restore();
+    }
+    /* anillo interior alrededor de la tapa */
+    var M = 28, dir = (m === 'armed' || m === 'spin') ? 1 : 0.5, spd = (m === 'armed' ? 1 + 4 * I : (m === 'spin' ? 3 : 0.6)) * M;
+    for (i = 0; i < M; i++) {
+      var tl = (((-t * spd * dir - i) % M) + M) % M, bb = tl < 8 ? 1 - tl / 8 : 0.1, an = i / M * TAU;
+      x.save(); x.globalAlpha = 0.15 + 0.85 * bb; x.fillStyle = (m === 'win') ? '#fff' : YE; if (bb > 0.5) { x.shadowColor = YE; x.shadowBlur = R * 0.03; }
+      x.beginPath(); x.arc(Math.cos(an) * R * 0.318, Math.sin(an) * R * 0.318, R * 0.008, 0, TAU); x.fill(); x.restore();
+    }
+    /* destellos sobre los sectores */
+    var want = m === 'win' ? 22 : (m === 'armed' ? 8 + 10 * I : (m === 'spin' ? 10 : 7));
+    if (this.stars.length < want && Math.random() < 0.35) {
+      var sa = Math.random() * TAU, sr = R * (0.4 + Math.random() * 0.38);
+      this.stars.push({ x: Math.cos(sa) * sr, y: Math.sin(sa) * sr, t0: t, life: 0.5 + Math.random() * 0.6, s: R * (0.014 + Math.random() * 0.022) });
+    }
+    this.stars = this.stars.filter(function (st) { return t - st.t0 < st.life; });
+    this.stars.forEach(function (st) {
+      var k2 = (t - st.t0) / st.life, sz = st.s * Math.sin(k2 * Math.PI);
+      x.save(); x.translate(st.x, st.y); x.rotate(k2 * 1.2); x.globalAlpha = 0.9; x.fillStyle = '#fff'; x.shadowColor = '#fff'; x.shadowBlur = R * 0.03;
+      x.beginPath(); x.moveTo(0, -sz * 2); x.lineTo(sz * 0.35, -sz * 0.35); x.lineTo(sz * 2, 0); x.lineTo(sz * 0.35, sz * 0.35); x.lineTo(0, sz * 2); x.lineTo(-sz * 0.35, sz * 0.35); x.lineTo(-sz * 2, 0); x.lineTo(-sz * 0.35, -sz * 0.35); x.closePath(); x.fill(); x.restore();
+    });
   };
 
   /* Segmento donde cae el giro: lo eligen r1 y r2 que manda el servidor, así los dos dispositivos coinciden. */
@@ -366,21 +468,33 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
   Wheel.prototype.play = function (ev, now, h) {
     var from = ((this.angle % 360) + 360) % 360, s0 = from - 10;
     var delta = 360 * 6 + ((((this._target(ev) - s0) % 360) + 360) % 360);
-    this._p = { ev: ev, from: from, s0: s0, to: s0 + delta, dur: ev.dur || 7000, now: now, h: h || {}, phase: 'wait', done: false };
-    this.mode = 'play';
+    var t0 = now();
+    this._p = { ev: ev, from: from, s0: s0, to: s0 + delta, dur: ev.dur || 7000, now: now, h: h || {}, phase: 'wait', done: false, t0: t0, total: Math.max(1500, ev.inicio - t0), armed: false };
+    this.mode = 'play'; this.result = null; this._nextBeat = 0;
     this.root.classList.add('armed');
   };
   Wheel.prototype._playFrame = function () {
     var p = this._p, tt = p.now() - p.ev.inicio, W = 1200;
     if (tt < 0) {
+      var I = Math.max(0, Math.min(1, 1 - (-tt) / p.total)); this.fxI = I; this._setFx('armed');
+      if (!p.armed) { p.armed = true; if (p.h.arm) p.h.arm(p.total); }
       var w = Math.max(0, Math.min(1, (W + tt) / W));
-      this.angle = p.from + (p.s0 - p.from) * Math.sin(w * Math.PI / 2);
+      var base = p.from + (p.s0 - p.from) * Math.sin(w * Math.PI / 2);
+      this.angle = base + Math.sin(this._tm * 55) * (0.3 + 3.2 * I * I);   /* la aguja vibra cada vez más */
       this._apply();
-      if (p.h.wait) p.h.wait(-tt);
+      /* latidos: cada vez más seguidos */
+      if (this._tm >= this._nextBeat) {
+        this._nextBeat = this._tm + (0.95 - 0.68 * I);
+        this._pulse = 1; this._spawnWave(I > 0.55 ? RD : YE, 0.9);
+        if (p.h.beat) p.h.beat(I);
+      }
+      var root = this.root; root.style.transform = 'scale(' + (1 + 0.028 * this._pulse * (0.4 + I)) + ')';
+      if (p.h.wait) p.h.wait(-tt, I);
       return;
     }
     if (p.phase === 'wait') {
-      p.phase = 'spin';
+      p.phase = 'spin'; this.fxI = 1; this._setFx('spin'); this.root.style.transform = '';
+      this._spawnWave(YE, 1.4); this._pulse = 1;
       this.root.classList.remove('armed'); this.root.classList.add('spin');
       if (p.h.start) p.h.start();
     }
@@ -394,7 +508,9 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
       if (p.h.done) p.h.done();
     }
   };
-  Wheel.prototype.idle = function () { this.mode = 'idle'; this.root.classList.remove('spin', 'armed'); };
+  /* Festejo de luces: gana = true (dorado y blanco) / false (azul suave). */
+  Wheel.prototype.celebrate = function (gana) { this.result = gana ? 'win' : 'np'; this._setFx(this.result); if (gana) { this._pulse = 1; } };
+  Wheel.prototype.idle = function () { this.mode = 'idle'; this.result = null; this.fxI = 0; this.root.style.transform = ''; this.root.classList.remove('spin', 'armed'); this._setFx('idle'); };
 
   GS.Wheel = Wheel;
 
@@ -423,7 +539,12 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
       start: function () { tone(180, 0, 0.7, 'sawtooth', 0.12, 720); },
       hello: function () { tone(660, 0, 0.18, 'sine', 0.25); tone(990, 0.14, 0.32, 'sine', 0.25); },
       win: function () { [523, 659, 784, 1047, 1319].forEach(function (f, i) { tone(f, i * 0.11, 0.35, 'triangle', 0.28); }); tone(1047, 0.6, 0.9, 'sine', 0.16); },
-      np: function () { tone(440, 0, 0.22, 'sine', 0.2); tone(330, 0.2, 0.4, 'sine', 0.2); }
+      np: function () { tone(440, 0, 0.22, 'sine', 0.2); tone(330, 0.2, 0.4, 'sine', 0.2); },
+      /* suspenso: un "riser" que sube mientras se acerca el giro + latidos que se aceleran */
+      riser: function (ms) { var d = Math.max(1, ms / 1000); tone(70, 0, d, 'sawtooth', 0.07, 520); tone(140, 0, d, 'triangle', 0.1, 1040); },
+      heart: function (I) { var v = 0.35 + 0.45 * I; tone(62, 0, 0.16, 'sine', v); tone(48, 0.02, 0.2, 'sine', v * 0.8); tone(58, 0.17, 0.14, 'sine', v * 0.7); },
+      tension: function (I) { tone(600 + 900 * I, 0, 0.07, 'square', 0.05 + 0.06 * I); },
+      boom: function () { tone(110, 0, 0.9, 'sine', 0.5, 28); tone(900, 0, 0.5, 'sawtooth', 0.12, 120); }
     };
   })();
 
@@ -525,7 +646,7 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
   function rueda() {
     $('rNombre').textContent = primerNombre(st.nombre);
     ver('s-rul');
-    if (!wheel) wheel = new GS.Wheel($('wheel'), { segmentos: CFG.segmentos, accent: ACC, res: 900, idleSpeed: 6, onTick: GS.Sound.tick });
+    if (!wheel) wheel = new GS.Wheel($('wheel'), { segmentos: CFG.segmentos, accent: ACC, res: 900, idleSpeed: 14, surge: 60, onTick: GS.Sound.tick });
   }
   function girar() {
     if (busy || st.fin) return;
@@ -540,13 +661,17 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
     });
   }
   function jugar(ev) {
+    var ult = '';
     wheel.play(ev, function () { return reloj.now(); }, {
-      wait: function (ms) {
+      arm: function (total) { GS.Sound.riser(total); if (navigator.vibrate) { try { navigator.vibrate([60, 90, 60, 90, 80, 70, 80, 60, 100, 50, 100, 40, 140]); } catch (e) {} } },
+      beat: function (I) { GS.Sound.heart(I); },
+      wait: function (ms, I) {
         var s = Math.ceil(ms / 1000);
-        est(ms > 5500 ? 'Hay un giro en curso · tu turno en ' + s + ' s' : 'Tu giro arranca en ' + s, 'arm');
+        est(ms > 7500 ? 'Hay un giro en curso · tu turno en ' + s + ' s' : (I > 0.6 ? '¡Ahí va!… ' + s : 'Tu giro arranca en ' + s), 'arm');
+        if (String(s) !== ult) { ult = String(s); GS.Sound.tension(I); }
       },
-      start: function () { est('Girando…', 'spin'); GS.Sound.start(); },
-      done: function () { terminar(ev.premio, 1100); }
+      start: function () { est('Girando…', 'spin'); GS.Sound.boom(); GS.Sound.start(); if (navigator.vibrate) { try { navigator.vibrate(350); } catch (e) {} } },
+      done: function () { wheel.celebrate(!GS.esNoPremio(ev.premio)); if (navigator.vibrate && !GS.esNoPremio(ev.premio)) { try { navigator.vibrate([200, 80, 200, 80, 450]); } catch (e) {} } terminar(ev.premio, 1100); }
     });
   }
   function terminar(premio, demora) {

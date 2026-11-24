@@ -26,7 +26,7 @@ var MARCAS = ['GWM', 'Changan', 'Triumph', 'Grupo Silva'];
 var NO_PREMIO = 'Seguí participando';
 var COD_AREA = '381';   // código de área que se agrega cuando el cliente escribe solo 7 dígitos (Tucumán)
 
-var LEAD_MS = 4000;     // cuenta regresiva antes de que arranque el giro
+var LEAD_MS = 6000;     // cuenta regresiva antes de que arranque el giro
 var DUR_MS = 7000;      // duración del giro
 var HOLD_MS = 9000;     // tiempo que la pantalla muestra el resultado antes de liberar el turno
 
