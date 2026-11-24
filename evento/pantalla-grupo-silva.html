@@ -48,6 +48,11 @@ body.act .act-g{opacity:1;transform:none}
 .pasos{display:flex;flex-direction:column;gap:calc(var(--u)*1.6)}
 .pasos div{display:flex;align-items:center;gap:calc(var(--u)*1.4);font-size:calc(var(--u)*2.1);font-weight:600;letter-spacing:.05em;text-transform:uppercase}
 .pasos b{display:grid;place-items:center;width:calc(var(--u)*3.8);height:calc(var(--u)*3.8);border-radius:calc(var(--u)*.9);border:1px solid var(--acc);color:var(--acc);font-size:calc(var(--u)*1.9);box-shadow:inset 0 0 calc(var(--u)*1) rgba(var(--acc-rgb),.35)}
+.fich{left:calc(var(--u)*55);top:calc(var(--u)*48.4);width:calc(var(--u)*41);display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*1.6);padding:calc(var(--u)*.7) calc(var(--u)*1) calc(var(--u)*.7) calc(var(--u)*2);border:1px solid rgba(247,197,49,.6);border-radius:calc(var(--u)*1.6);background:rgba(247,197,49,.06)}
+.fich b{display:block;font-size:calc(var(--u)*1.9);letter-spacing:.04em;text-transform:uppercase}
+.fich span{display:block;margin-top:calc(var(--u)*.3);font-size:calc(var(--u)*1.05);letter-spacing:.12em;text-transform:uppercase;color:var(--sun)}
+.fich .qrp{flex:none;width:calc(var(--u)*5.6);height:calc(var(--u)*5.6);padding:calc(var(--u)*.4);border-radius:calc(var(--u)*.7);box-shadow:none}
+.fich .qrp::before,.fich .qrp::after{display:none}
 .chips{left:calc(var(--u)*55);top:calc(var(--u)*50);width:calc(var(--u)*40);display:flex;gap:calc(var(--u)*1.2);justify-content:center;flex-wrap:wrap}
 .chip{padding:calc(var(--u)*.7) calc(var(--u)*1.7);border-radius:99px;font-size:calc(var(--u)*1.5);font-weight:700;letter-spacing:.14em;text-transform:uppercase;border:1px solid rgba(247,197,49,.5);color:var(--sun);background:rgba(247,197,49,.07)}
 .cont{left:calc(var(--u)*5);top:calc(var(--u)*53);font-size:calc(var(--u)*1.6);font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
@@ -66,7 +71,7 @@ body.act .act-g{opacity:1;transform:none}
 .mini{left:calc(var(--u)*3);bottom:calc(var(--u)*3);display:flex;align-items:center;gap:calc(var(--u)*1.2);font-size:calc(var(--u)*1.4);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);line-height:1.35}
 .mini .qrp{width:calc(var(--u)*8.6);height:calc(var(--u)*8.6);padding:calc(var(--u)*.6);border-radius:calc(var(--u)*.8);box-shadow:none}
 .mini .qrp::before,.mini .qrp::after{display:none}
-.hint{right:calc(var(--u)*3);bottom:calc(var(--u)*.6);font-size:calc(var(--u)*1.2);letter-spacing:.2em;text-transform:uppercase;color:var(--mut);opacity:.7;transition:opacity 1s}
+.hint{right:calc(var(--u)*3);top:calc(var(--u)*5.2);font-size:calc(var(--u)*1.2);letter-spacing:.2em;text-transform:uppercase;color:var(--mut);opacity:.7;transition:opacity 1s}
 .hint.h,body.act .hint{opacity:0}
 .demo{left:50%;bottom:calc(var(--u)*1.2);transform:translateX(-50%);background:var(--sun);color:#10142c;font-weight:700;font-size:calc(var(--u)*1.2);letter-spacing:.12em;padding:calc(var(--u)*.4) calc(var(--u)*1.4);border-radius:99px;display:none}
 #fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
@@ -83,19 +88,19 @@ body.act .act-g{opacity:1;transform:none}
   .kick{left:calc(var(--u)*5);top:calc(var(--u)*10);font-size:calc(var(--u)*1.5)}
   .hl{left:calc(var(--u)*5);top:calc(var(--u)*12.6);font-size:calc(var(--u)*6.3)}
   .hl .y{font-size:calc(var(--u)*7.4)}
-  .qrb{left:calc(var(--u)*5);top:calc(var(--u)*84)}
-  .qrp{width:calc(var(--u)*12);height:calc(var(--u)*12)}
+  .qrb{left:calc(var(--u)*5);top:calc(var(--u)*79.6)}
+  .qrp{width:calc(var(--u)*10);height:calc(var(--u)*10)}
   .pasos{gap:calc(var(--u)*1.1)}
   .pasos div{font-size:calc(var(--u)*1.75)}
   .pasos b{width:calc(var(--u)*3.2);height:calc(var(--u)*3.2);font-size:calc(var(--u)*1.6)}
-  .chips{display:none}
+  .fich{left:calc(var(--u)*5);top:calc(var(--u)*91.6);width:calc(var(--u)*46.2)}
   .pan{width:calc(var(--u)*25);top:calc(var(--u)*13)}
   .pan .big{font-size:calc(var(--u)*4.2)}
   .pr .big.num{font-size:calc(var(--u)*12)}
   .pr .big.win{font-size:calc(var(--u)*4.4)}
   .pr .big.np{font-size:calc(var(--u)*2.8)}
   .mini{bottom:calc(var(--u)*4)}
-  .hint{bottom:calc(var(--u)*1.2)}
+  .hint{top:calc(var(--u)*6.4)}
 }
 /* Ruleta tecnológica. Todo se mide en --u (1% del ancho de la ruleta), que el motor actualiza solo. */
 .gw{position:relative;width:100%;aspect-ratio:1;--u:6px;--acc:#00e5ff;--acc-rgb:0,229,255}
@@ -144,7 +149,7 @@ body.act .act-g{opacity:1;transform:none}
       <div class="qrp"><svg viewBox="0 0 490 490" class="segno"><path transform="scale(10)" class="qrline" stroke="#161c3d" d="M2 2.5h7m5 0h2m1 0h1m3 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h1m2 0h1m2 0h1m1 0h7m-45 1h1m5 0h1m1 0h1m3 0h2m1 0h4m3 0h2m1 0h1m5 0h3m1 0h1m2 0h1m5 0h1m-45 1h1m1 0h3m1 0h1m2 0h1m1 0h2m1 0h3m1 0h1m1 0h4m2 0h2m3 0h1m1 0h1m1 0h1m2 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h2m2 0h1m1 0h3m1 0h1m1 0h1m6 0h5m1 0h1m1 0h2m1 0h1m1 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h1m3 0h1m1 0h2m1 0h9m4 0h1m3 0h3m1 0h1m1 0h3m1 0h1m-45 1h1m5 0h1m2 0h1m2 0h4m3 0h2m3 0h1m2 0h2m2 0h2m5 0h1m5 0h1m-45 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-37 1h8m1 0h2m1 0h1m3 0h1m3 0h1m1 0h2m-31 1h1m1 0h4m1 0h1m5 0h5m1 0h5m2 0h3m3 0h2m2 0h2m1 0h2m1 0h1m-43 1h1m2 0h1m5 0h1m2 0h1m3 0h3m3 0h1m1 0h3m1 0h3m1 0h6m1 0h1m1 0h1m-43 1h2m1 0h1m1 0h3m5 0h2m1 0h1m3 0h3m3 0h2m4 0h4m1 0h1m3 0h1m1 0h2m-45 1h1m6 0h1m1 0h3m2 0h5m4 0h4m5 0h1m1 0h1m3 0h1m1 0h1m1 0h1m1 0h1m-43 1h6m1 0h5m2 0h2m3 0h1m2 0h2m2 0h1m2 0h2m1 0h2m2 0h3m-41 1h4m1 0h1m5 0h1m2 0h2m1 0h1m1 0h1m1 0h1m4 0h2m1 0h2m1 0h1m2 0h2m1 0h1m2 0h1m1 0h1m-44 1h2m2 0h1m1 0h1m1 0h1m1 0h1m4 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m2 0h2m2 0h1m-42 1h1m1 0h4m3 0h1m1 0h1m1 0h1m2 0h2m1 0h1m3 0h3m5 0h1m3 0h3m1 0h1m2 0h3m-44 1h8m2 0h4m1 0h1m3 0h5m5 0h5m2 0h1m3 0h1m2 0h1m-43 1h1m1 0h1m2 0h2m1 0h1m1 0h1m1 0h1m4 0h1m1 0h1m2 0h2m1 0h2m1 0h2m2 0h4m1 0h1m2 0h1m1 0h1m-45 1h3m1 0h6m1 0h2m1 0h1m1 0h2m1 0h1m3 0h3m1 0h1m1 0h1m2 0h2m3 0h2m1 0h3m1 0h1m-45 1h4m1 0h1m1 0h1m5 0h1m2 0h4m3 0h1m1 0h3m2 0h2m4 0h1m3 0h3m-43 1h13m1 0h2m4 0h5m2 0h4m3 0h1m1 0h5m2 0h2m-45 1h1m3 0h1m3 0h4m1 0h2m1 0h1m3 0h1m3 0h1m1 0h3m1 0h2m2 0h1m1 0h1m3 0h1m2 0h1m-44 1h5m1 0h1m1 0h1m1 0h3m1 0h1m2 0h2m1 0h1m1 0h1m1 0h4m2 0h5m1 0h1m1 0h1m1 0h5m-45 1h1m1 0h3m3 0h2m8 0h1m1 0h1m3 0h3m2 0h2m1 0h1m1 0h1m1 0h1m3 0h1m1 0h1m-42 1h8m1 0h5m4 0h6m1 0h1m1 0h1m1 0h1m1 0h1m2 0h6m2 0h1m-44 1h1m1 0h2m3 0h1m1 0h2m2 0h4m1 0h1m1 0h1m1 0h2m4 0h3m2 0h1m1 0h1m3 0h1m1 0h3m-44 1h1m2 0h2m1 0h4m2 0h2m5 0h5m4 0h1m3 0h1m2 0h1m3 0h2m1 0h1m-43 1h1m1 0h4m1 0h2m1 0h1m5 0h2m1 0h1m1 0h1m2 0h1m4 0h5m1 0h1m1 0h2m1 0h3m1 0h1m-45 1h1m1 0h2m2 0h1m4 0h5m2 0h1m1 0h4m2 0h1m2 0h2m1 0h2m1 0h1m2 0h3m2 0h2m-45 1h2m1 0h1m3 0h1m6 0h2m1 0h2m1 0h2m1 0h1m2 0h1m3 0h2m1 0h3m2 0h1m1 0h2m1 0h2m-43 1h1m1 0h1m1 0h1m3 0h3m6 0h1m3 0h4m1 0h2m1 0h2m2 0h2m1 0h1m3 0h1m1 0h1m-44 1h4m2 0h6m7 0h2m1 0h1m1 0h6m2 0h3m3 0h4m-38 1h2m1 0h1m6 0h1m2 0h3m1 0h3m1 0h1m1 0h1m1 0h1m6 0h1m1 0h1m-40 1h3m2 0h1m3 0h1m2 0h1m3 0h1m1 0h2m1 0h2m1 0h1m1 0h7m1 0h3m1 0h5m-39 1h1m1 0h1m3 0h1m1 0h1m1 0h1m1 0h2m4 0h1m3 0h2m1 0h1m1 0h1m1 0h4m1 0h1m1 0h1m1 0h1m1 0h1m-44 1h4m2 0h2m2 0h1m3 0h3m2 0h1m3 0h1m1 0h2m2 0h1m1 0h2m6 0h1m1 0h1m1 0h1m-45 1h1m2 0h2m1 0h1m5 0h1m2 0h1m4 0h5m1 0h1m1 0h1m1 0h1m1 0h2m1 0h6m2 0h2m-37 1h1m4 0h2m2 0h4m3 0h1m4 0h3m1 0h4m3 0h2m1 0h1m-44 1h7m2 0h1m1 0h5m3 0h2m1 0h1m1 0h2m1 0h1m1 0h1m3 0h2m1 0h1m1 0h1m1 0h2m-42 1h1m5 0h1m1 0h5m1 0h2m2 0h1m1 0h1m3 0h2m3 0h1m3 0h1m1 0h2m3 0h3m1 0h1m-45 1h1m1 0h3m1 0h1m1 0h1m3 0h1m1 0h3m3 0h5m1 0h1m2 0h4m1 0h8m1 0h2m-45 1h1m1 0h3m1 0h1m1 0h1m1 0h1m3 0h2m1 0h2m2 0h1m1 0h1m1 0h2m1 0h1m1 0h2m2 0h1m4 0h1m-40 1h1m1 0h3m1 0h1m2 0h1m1 0h1m1 0h3m1 0h1m1 0h1m2 0h1m2 0h2m5 0h2m2 0h3m1 0h1m1 0h1m1 0h1m-45 1h1m5 0h1m1 0h3m4 0h1m3 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h1m1 0h2m1 0h1m1 0h1m2 0h4m-45 1h7m4 0h2m2 0h1m1 0h4m1 0h1m2 0h1m7 0h1m1 0h1m2 0h1m1 0h1"/></svg></div>
       <div class="pasos"><div><b>1</b>Escaneá el QR</div><div><b>2</b>Completá tus datos</div><div><b>3</b>Girá la ruleta</div></div>
     </div>
-    <div class="abs chips" id="chips"></div>
+    <div class="abs fich"><div><b>Fichas técnicas</b><span>Escaneá y elegí tu modelo</span></div><div class="qrp"><svg viewBox="0 0 450 450" class="segno"><path transform="scale(10)" class="qrline" stroke="#161c3d" d="M2 2.5h7m4 0h1m2 0h2m3 0h5m1 0h1m6 0h1m1 0h7m-41 1h1m5 0h1m1 0h2m3 0h1m2 0h1m1 0h1m2 0h5m2 0h1m5 0h1m5 0h1m-41 1h1m1 0h3m1 0h1m1 0h4m1 0h1m1 0h1m1 0h1m2 0h1m1 0h3m3 0h1m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1m-41 1h1m1 0h3m1 0h1m2 0h3m1 0h2m1 0h1m2 0h1m1 0h1m4 0h2m1 0h3m2 0h1m1 0h3m1 0h1m-41 1h1m1 0h3m1 0h1m3 0h1m2 0h1m1 0h1m2 0h2m1 0h2m1 0h1m1 0h4m1 0h2m1 0h1m1 0h3m1 0h1m-41 1h1m5 0h1m8 0h2m2 0h5m1 0h1m3 0h1m1 0h1m2 0h1m5 0h1m-41 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-32 1h1m4 0h1m1 0h1m6 0h2m3 0h5m-32 1h3m1 0h2m4 0h1m3 0h2m1 0h5m3 0h1m1 0h4m6 0h2m-40 1h1m1 0h2m1 0h1m1 0h1m1 0h2m8 0h1m2 0h1m2 0h1m2 0h5m1 0h3m1 0h3m-36 1h2m4 0h1m1 0h1m4 0h1m1 0h1m2 0h3m4 0h1m3 0h1m1 0h1m1 0h2m-39 1h1m1 0h2m3 0h3m2 0h1m1 0h4m2 0h3m1 0h1m6 0h4m4 0h1m-40 1h2m1 0h1m1 0h3m2 0h1m1 0h3m2 0h2m2 0h8m1 0h2m2 0h1m1 0h2m-38 1h2m1 0h2m1 0h5m1 0h1m2 0h1m2 0h1m1 0h6m2 0h1m1 0h1m2 0h1m3 0h1m1 0h1m-40 1h3m2 0h1m1 0h2m1 0h1m1 0h2m1 0h1m1 0h2m2 0h2m2 0h1m2 0h1m1 0h2m1 0h2m3 0h2m-41 1h2m3 0h1m1 0h1m1 0h1m2 0h1m4 0h3m1 0h1m1 0h1m2 0h2m6 0h1m4 0h1m-40 1h1m2 0h7m1 0h1m4 0h2m7 0h1m4 0h1m1 0h1m3 0h1m2 0h1m-39 1h2m1 0h1m2 0h1m3 0h2m2 0h11m1 0h1m1 0h1m2 0h2m1 0h1m1 0h1m-38 1h2m4 0h2m2 0h2m1 0h1m2 0h1m1 0h1m8 0h1m1 0h1m6 0h2m-38 1h1m3 0h2m1 0h1m1 0h2m1 0h3m1 0h1m1 0h1m1 0h5m2 0h4m1 0h1m2 0h1m1 0h2m1 0h1m-40 1h4m1 0h3m2 0h1m1 0h4m2 0h1m4 0h2m2 0h1m2 0h1m1 0h2m1 0h1m1 0h3m-41 1h1m1 0h2m1 0h1m3 0h1m3 0h1m1 0h1m4 0h1m1 0h2m2 0h3m1 0h11m-35 1h2m1 0h1m1 0h2m1 0h1m3 0h1m2 0h1m1 0h2m3 0h2m5 0h3m1 0h1m-36 1h1m2 0h1m4 0h1m2 0h1m3 0h1m1 0h2m1 0h2m1 0h1m2 0h3m2 0h1m1 0h1m-38 1h1m1 0h2m2 0h2m2 0h2m1 0h1m1 0h2m2 0h1m1 0h2m1 0h3m2 0h1m6 0h1m1 0h2m-39 1h1m1 0h3m4 0h3m1 0h1m3 0h2m4 0h1m2 0h2m2 0h4m2 0h4m-40 1h1m1 0h7m2 0h3m1 0h1m3 0h3m1 0h1m6 0h2m1 0h2m1 0h1m1 0h2m-34 1h4m3 0h1m2 0h1m1 0h2m3 0h1m1 0h2m3 0h2m1 0h2m1 0h1m1 0h2m-41 1h1m1 0h1m1 0h1m1 0h2m2 0h1m3 0h1m2 0h6m1 0h2m1 0h1m2 0h4m1 0h3m1 0h2m-39 1h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h3m3 0h3m3 0h2m2 0h1m2 0h1m2 0h1m2 0h2m-40 1h1m1 0h1m3 0h2m2 0h1m1 0h1m1 0h2m5 0h1m4 0h1m3 0h1m2 0h3m2 0h1m-37 1h3m3 0h2m2 0h1m1 0h2m1 0h2m2 0h3m3 0h4m1 0h1m1 0h1m2 0h4m-40 1h1m2 0h4m1 0h1m1 0h2m1 0h4m2 0h1m5 0h2m1 0h2m1 0h7m1 0h1m-33 1h3m1 0h3m3 0h1m3 0h2m1 0h2m1 0h1m1 0h3m3 0h1m3 0h1m-41 1h7m2 0h2m5 0h2m3 0h3m1 0h1m3 0h1m1 0h2m1 0h1m1 0h2m1 0h1m-40 1h1m5 0h1m1 0h1m5 0h1m1 0h2m1 0h2m1 0h3m7 0h1m3 0h2m2 0h1m-41 1h1m1 0h3m1 0h1m3 0h1m2 0h1m4 0h1m1 0h1m1 0h1m1 0h1m1 0h1m3 0h1m1 0h5m1 0h1m1 0h1m-41 1h1m1 0h3m1 0h1m1 0h4m1 0h4m1 0h2m1 0h2m1 0h1m1 0h2m3 0h2m3 0h2m-38 1h1m1 0h3m1 0h1m1 0h4m1 0h3m5 0h2m1 0h1m5 0h1m4 0h1m2 0h3m-41 1h1m5 0h1m1 0h1m2 0h1m9 0h1m4 0h1m1 0h1m1 0h5m1 0h2m1 0h1m-40 1h7m2 0h5m2 0h4m2 0h2m1 0h1m1 0h1m2 0h3m6 0h1"/></svg></div></div>
   </div>
 
   <div class="abs act-g g">
@@ -443,9 +448,6 @@ body.act .act-g{opacity:1;transform:none}
   var GRUPO = MARCA === 'Grupo Silva';
   $('kEv').textContent = GRUPO ? 'T - Connect' : 'T - Connect · Estand ' + MARCA;
   if (GRUPO) document.querySelector('.marca').style.display = 'none';
-  var seen = {}; segs.filter(function (s, i, a) { return !GS.esNoPremio(s) && a.indexOf(s) === i; }).forEach(function (s) {
-    var d = document.createElement('div'); d.className = 'chip'; d.textContent = s; $('chips').appendChild(d);
-  });
   var w = new GS.Wheel($('wheel'), { segmentos: reposo, accent: ACC, res: 1400, idleSpeed: 5 });
 
   /* ---- contador ---- */
