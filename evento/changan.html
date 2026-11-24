@@ -532,9 +532,9 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
 
   /* ---- Inicio ---- */
   var GRUPO = MARCA === 'Grupo Silva';
-  $('kEvento').textContent = GRUPO ? CFG.evento : CFG.evento + ' · Estand ' + MARCA;
+  $('kEvento').textContent = GRUPO ? 'T - Connect' : 'T - Connect · Estand ' + MARCA;
   if (GRUPO) document.querySelector('.pill').style.display = 'none';
-  $('pEv').textContent = CFG.evento;
+  $('pEv').textContent = 'T - Connect';
   if (DEMO) $('demo').style.display = 'block';
   var prev = DEMO ? null : leer();
   if (prev && prev.codigo) { st = prev; $('pNom').textContent = st.nombre; if (st.fin) finalizar(false); else rueda(); }

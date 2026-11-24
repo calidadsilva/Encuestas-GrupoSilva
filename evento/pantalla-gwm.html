@@ -61,6 +61,7 @@ body.act .act-g{opacity:1;transform:none}
 .pan .cod{margin-top:calc(var(--u)*1.6);font-size:calc(var(--u)*1.8);letter-spacing:.2em;color:var(--mut);font-weight:600}
 .pr .big.num{font-size:calc(var(--u)*14);color:var(--sun);text-shadow:0 0 calc(var(--u)*3) rgba(247,197,49,.6)}
 .pr .big.win{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--sun));-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 calc(var(--u)*2) rgba(247,197,49,.5));font-size:calc(var(--u)*4.8)}
+.pr .big.np{font-size:calc(var(--u)*2.8);line-height:1.15;word-break:normal;overflow-wrap:normal}
 .pr .big.spin{color:var(--sun);animation:blink .7s ease-in-out infinite}
 .mini{left:calc(var(--u)*3);bottom:calc(var(--u)*3);display:flex;align-items:center;gap:calc(var(--u)*1.2);font-size:calc(var(--u)*1.4);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);line-height:1.35}
 .mini .qrp{width:calc(var(--u)*8.6);height:calc(var(--u)*8.6);padding:calc(var(--u)*.6);border-radius:calc(var(--u)*.8);box-shadow:none}
@@ -69,6 +70,33 @@ body.act .act-g{opacity:1;transform:none}
 .hint.h,body.act .hint{opacity:0}
 .demo{left:50%;bottom:calc(var(--u)*1.2);transform:translateX(-50%);background:var(--sun);color:#10142c;font-weight:700;font-size:calc(var(--u)*1.2);letter-spacing:.12em;padding:calc(var(--u)*.4) calc(var(--u)*1.4);border-radius:99px;display:none}
 #fx{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
+
+/* pantalla vertical (TV girada) */
+@media (max-aspect-ratio:1/1){
+  :root{--u:min(1.7778vw,1vh)}
+  .stage{width:calc(var(--u)*56.25);height:calc(var(--u)*100)}
+  .plate img{height:calc(var(--u)*3.2)}
+  .marca{left:calc(var(--u)*15.6);height:calc(var(--u)*4.4);font-size:calc(var(--u)*1.6);padding:0 calc(var(--u)*1.6)}
+  .live{top:calc(var(--u)*3.2);font-size:calc(var(--u)*1.2)}
+  #rw{left:calc(var(--u)*3.1);top:calc(var(--u)*33);width:calc(var(--u)*50);height:calc(var(--u)*50);transform:scale(.9)}
+  body.act #rw{transform:none}
+  .kick{left:calc(var(--u)*5);top:calc(var(--u)*10);font-size:calc(var(--u)*1.5)}
+  .hl{left:calc(var(--u)*5);top:calc(var(--u)*12.6);font-size:calc(var(--u)*6.3)}
+  .hl .y{font-size:calc(var(--u)*7.4)}
+  .qrb{left:calc(var(--u)*5);top:calc(var(--u)*84)}
+  .qrp{width:calc(var(--u)*12);height:calc(var(--u)*12)}
+  .pasos{gap:calc(var(--u)*1.1)}
+  .pasos div{font-size:calc(var(--u)*1.75)}
+  .pasos b{width:calc(var(--u)*3.2);height:calc(var(--u)*3.2);font-size:calc(var(--u)*1.6)}
+  .chips{display:none}
+  .pan{width:calc(var(--u)*25);top:calc(var(--u)*13)}
+  .pan .big{font-size:calc(var(--u)*4.2)}
+  .pr .big.num{font-size:calc(var(--u)*12)}
+  .pr .big.win{font-size:calc(var(--u)*4.4)}
+  .pr .big.np{font-size:calc(var(--u)*2.8)}
+  .mini{bottom:calc(var(--u)*4)}
+  .hint{bottom:calc(var(--u)*1.2)}
+}
 /* Ruleta tecnológica. Todo se mide en --u (1% del ancho de la ruleta), que el motor actualiza solo. */
 .gw{position:relative;width:100%;aspect-ratio:1;--u:6px;--acc:#f7c531;--acc-rgb:247,197,49}
 .gw canvas{position:absolute;inset:0;width:100%;height:100%}
@@ -112,7 +140,6 @@ body.act .act-g{opacity:1;transform:none}
       <div class="qrp"><svg viewBox="0 0 450 450" class="segno"><path transform="scale(10)" class="qrline" stroke="#161c3d" d="M2 2.5h7m2 0h1m1 0h1m2 0h2m1 0h1m1 0h2m1 0h2m8 0h1m1 0h7m-41 1h1m5 0h1m1 0h3m2 0h2m1 0h1m4 0h1m1 0h2m1 0h1m1 0h3m3 0h1m5 0h1m-41 1h1m1 0h3m1 0h1m1 0h1m1 0h2m2 0h2m4 0h1m1 0h5m1 0h1m3 0h1m1 0h1m1 0h3m1 0h1m-41 1h1m1 0h3m1 0h1m2 0h3m4 0h2m1 0h1m1 0h1m5 0h1m1 0h1m1 0h1m2 0h1m1 0h3m1 0h1m-41 1h1m1 0h3m1 0h1m2 0h1m5 0h1m1 0h3m2 0h1m1 0h1m2 0h3m1 0h2m1 0h1m1 0h3m1 0h1m-41 1h1m5 0h1m2 0h2m3 0h4m1 0h2m1 0h2m1 0h1m3 0h1m1 0h1m2 0h1m5 0h1m-41 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-28 1h1m2 0h1m5 0h3m3 0h5m-32 1h3m1 0h2m3 0h4m1 0h1m3 0h1m6 0h1m1 0h4m6 0h2m-40 1h1m1 0h2m1 0h1m1 0h1m1 0h3m2 0h1m3 0h2m3 0h3m2 0h5m1 0h3m1 0h3m-41 1h2m2 0h1m1 0h1m5 0h2m4 0h1m1 0h1m2 0h1m1 0h1m4 0h1m2 0h1m2 0h1m1 0h2m-40 1h1m2 0h1m4 0h6m1 0h1m1 0h2m1 0h3m2 0h1m6 0h2m1 0h1m4 0h1m-41 1h3m1 0h1m1 0h3m2 0h1m1 0h2m1 0h1m1 0h3m1 0h1m2 0h3m1 0h1m1 0h2m2 0h1m1 0h2m-39 1h1m1 0h1m4 0h4m2 0h1m5 0h1m1 0h3m1 0h2m1 0h2m1 0h1m2 0h1m3 0h1m1 0h1m-40 1h3m2 0h1m1 0h2m1 0h5m2 0h2m2 0h1m1 0h1m1 0h4m1 0h1m2 0h2m3 0h2m-40 1h1m3 0h1m1 0h1m1 0h1m1 0h2m2 0h5m1 0h1m2 0h1m1 0h1m1 0h1m5 0h1m4 0h1m-40 1h2m3 0h3m1 0h1m1 0h1m3 0h3m1 0h1m3 0h1m1 0h1m1 0h1m2 0h3m3 0h1m2 0h1m-36 1h2m1 0h1m1 0h1m1 0h2m2 0h2m1 0h3m1 0h3m2 0h1m1 0h1m2 0h2m1 0h1m1 0h1m-38 1h2m4 0h6m2 0h1m1 0h1m8 0h3m8 0h2m-38 1h1m1 0h4m2 0h1m1 0h1m1 0h3m1 0h1m1 0h1m1 0h2m1 0h8m1 0h1m2 0h1m1 0h2m1 0h1m-40 1h4m1 0h1m1 0h1m2 0h1m1 0h4m1 0h2m4 0h3m1 0h4m1 0h4m1 0h3m-41 1h1m1 0h1m2 0h1m1 0h2m6 0h1m1 0h2m1 0h2m1 0h1m3 0h2m1 0h11m-39 1h2m2 0h2m1 0h1m1 0h2m1 0h1m2 0h2m2 0h1m1 0h2m3 0h2m6 0h2m1 0h1m-38 1h3m4 0h2m1 0h2m1 0h1m3 0h1m1 0h2m1 0h2m1 0h1m2 0h3m2 0h1m1 0h1m1 0h1m-40 1h1m2 0h1m2 0h1m4 0h5m2 0h4m2 0h3m2 0h1m6 0h1m1 0h2m-39 1h1m1 0h3m5 0h1m2 0h2m2 0h2m4 0h1m2 0h2m2 0h4m2 0h4m-41 1h1m2 0h1m2 0h4m2 0h3m1 0h1m2 0h1m1 0h2m1 0h1m6 0h3m1 0h1m1 0h1m1 0h2m-41 1h2m5 0h4m3 0h4m1 0h2m3 0h1m1 0h2m3 0h2m2 0h1m1 0h1m1 0h2m-41 1h3m1 0h4m2 0h1m1 0h1m1 0h2m1 0h3m1 0h2m2 0h1m1 0h1m2 0h3m2 0h3m1 0h2m-40 1h4m2 0h1m1 0h1m2 0h3m1 0h1m2 0h1m1 0h1m2 0h3m1 0h2m2 0h1m2 0h1m2 0h2m-40 1h1m1 0h1m3 0h2m2 0h2m2 0h1m4 0h1m1 0h1m1 0h2m1 0h2m2 0h1m2 0h3m2 0h1m-37 1h2m4 0h2m4 0h1m2 0h2m2 0h2m1 0h1m4 0h3m2 0h1m2 0h4m-40 1h1m2 0h1m1 0h4m1 0h2m1 0h1m1 0h2m2 0h1m2 0h1m2 0h1m2 0h2m1 0h7m1 0h1m-33 1h1m1 0h1m1 0h1m1 0h1m2 0h2m2 0h3m2 0h1m1 0h5m3 0h1m3 0h1m-41 1h7m2 0h2m3 0h1m1 0h1m4 0h3m2 0h1m2 0h4m1 0h1m1 0h2m1 0h1m-40 1h1m5 0h1m1 0h2m4 0h1m1 0h1m1 0h9m5 0h1m3 0h2m2 0h1m-41 1h1m1 0h3m1 0h1m2 0h2m2 0h2m2 0h1m2 0h1m1 0h1m1 0h1m5 0h1m1 0h5m1 0h1m1 0h1m-41 1h1m1 0h3m1 0h1m1 0h1m1 0h2m1 0h1m1 0h3m1 0h1m2 0h1m1 0h1m2 0h1m3 0h2m3 0h2m-38 1h1m1 0h3m1 0h1m1 0h1m1 0h2m3 0h1m1 0h2m2 0h2m1 0h1m5 0h1m4 0h1m2 0h3m-41 1h1m5 0h1m1 0h1m2 0h1m1 0h2m7 0h1m3 0h1m1 0h1m1 0h5m1 0h2m1 0h1m-40 1h7m2 0h4m3 0h1m2 0h5m1 0h1m1 0h1m2 0h3m6 0h1"/></svg></div>
       <div class="pasos"><div><b>1</b>Escaneá el QR</div><div><b>2</b>Completá tus datos</div><div><b>3</b>Girá la ruleta</div></div>
     </div>
-    <div class="abs cont"><b id="cont">0</b>participantes hoy</div>
     <div class="abs chips" id="chips"></div>
   </div>
 
@@ -395,7 +422,7 @@ body.act .act-g{opacity:1;transform:none}
   })();
 
   var GRUPO = MARCA === 'Grupo Silva';
-  $('kEv').textContent = GRUPO ? CFG.evento : CFG.evento + ' · Estand ' + MARCA;
+  $('kEv').textContent = GRUPO ? 'T - Connect' : 'T - Connect · Estand ' + MARCA;
   if (GRUPO) document.querySelector('.marca').style.display = 'none';
   var seen = {}; segs.filter(function (s, i, a) { return !GS.esNoPremio(s) && a.indexOf(s) === i; }).forEach(function (s) {
     var d = document.createElement('div'); d.className = 'chip'; d.textContent = s; $('chips').appendChild(d);
@@ -403,11 +430,8 @@ body.act .act-g{opacity:1;transform:none}
   var w = new GS.Wheel($('wheel'), { segmentos: segs, accent: ACC, res: 1400, idleSpeed: 5 });
 
   /* ---- contador ---- */
-  var total = 0, shown = 0;
+  var total = 0;
   function setTotal(n) { if (typeof n === 'number' && n >= 0) total = n; }
-  setInterval(function () {
-    if (shown === total) return; shown += shown < total ? 1 : -1; $('cont').textContent = shown;
-  }, 60);
 
   /* ---- cola de jugadas ---- */
   var pending = [], cur = null, lastOk = 0;
@@ -449,7 +473,7 @@ body.act .act-g{opacity:1;transform:none}
       done: function () {
         var gana = !GS.esNoPremio(ev.premio);
         $('rTit').textContent = gana ? '¡Ganó!' : 'Resultado';
-        fin(gana ? ev.premio : 'Seguí participando', gana ? 'win' : '');
+        fin(gana ? ev.premio : 'Seguí participando', gana ? 'win' : 'np');
         if (gana) GS.confeti($('fx'), { x: 0.5, y: 0.5, n: 420 });
       }
     });
