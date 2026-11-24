@@ -22,7 +22,7 @@
 
 var ID_PLANILLA = '1IWnW34NuQO2y22zRRWc0mpIFVCtSBEqihGaIRWpAUT4';
 var HOJA_LEADS = 'Leads', HOJA_PREMIOS = 'Premios';
-var MARCAS = ['GWM', 'Changan', 'Triumph'];
+var MARCAS = ['GWM', 'Changan', 'Triumph', 'Grupo Silva'];
 var NO_PREMIO = 'Seguí participando';
 var COD_AREA = '381';   // código de área que se agrega cuando el cliente escribe solo 7 dígitos (Tucumán)
 

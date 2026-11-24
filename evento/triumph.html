@@ -531,7 +531,9 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
   }
 
   /* ---- Inicio ---- */
-  $('kEvento').textContent = CFG.evento + ' · Estand ' + MARCA;
+  var GRUPO = MARCA === 'Grupo Silva';
+  $('kEvento').textContent = GRUPO ? CFG.evento : CFG.evento + ' · Estand ' + MARCA;
+  if (GRUPO) document.querySelector('.pill').style.display = 'none';
   $('pEv').textContent = CFG.evento;
   if (DEMO) $('demo').style.display = 'block';
   var prev = DEMO ? null : leer();

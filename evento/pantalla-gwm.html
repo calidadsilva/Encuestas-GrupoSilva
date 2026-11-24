@@ -394,7 +394,9 @@ body.act .act-g{opacity:1;transform:none}
     })();
   })();
 
-  $('kEv').textContent = CFG.evento + ' · Estand ' + MARCA;
+  var GRUPO = MARCA === 'Grupo Silva';
+  $('kEv').textContent = GRUPO ? CFG.evento : CFG.evento + ' · Estand ' + MARCA;
+  if (GRUPO) document.querySelector('.marca').style.display = 'none';
   var seen = {}; segs.filter(function (s, i, a) { return !GS.esNoPremio(s) && a.indexOf(s) === i; }).forEach(function (s) {
     var d = document.createElement('div'); d.className = 'chip'; d.textContent = s; $('chips').appendChild(d);
   });
