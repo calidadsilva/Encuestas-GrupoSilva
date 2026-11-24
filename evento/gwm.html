@@ -194,7 +194,9 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
     return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
   }
   GS.norm = norm;
-  GS.esNoPremio = function (p) { return norm(p) === NO; };
+  GS.NOMBRE_NO = 'La suerte sigue girando!';
+  GS.esNoPremio = function (p) { var k = norm(p); return k === NO || k === 'lasuertesiguegirando'; };
+  GS.verPremio = function (p) { return GS.esNoPremio(p) ? GS.NOMBRE_NO : String(p || ''); };
 
   /* Mismo criterio que el servidor: con o sin código de área, con 0, 15, +54 o 9. */
   GS.normTel = function (raw) {
@@ -222,7 +224,7 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
   var COLORES = {
     gwm: { c: '#1e2433', e: '#c4cde8' }, changan: { c: '#8b93a8', e: '#e3e8f5' }, jmev: { c: '#3fb8ff', e: '#b4e6ff' },
     triumph: { c: '#f7c531', e: '#ffe9a0' }, benelli: { c: '#2fd37a', e: '#b0f5d0' }, morbidelli: { c: '#ff7a1a', e: '#ffcca0' },
-    abanico: { c: '#f7c531', e: '#ffe9a0' }, gorra: { c: '#2f7bff', e: '#a9ccff' }, seguiparticipando: { c: '#2b3680', e: '#b9c3ff' }
+    abanico: { c: '#f7c531', e: '#ffe9a0' }, gorra: { c: '#2f7bff', e: '#a9ccff' }, seguiparticipando: { c: '#2b3680', e: '#b9c3ff' }, lasuertesiguegirando: { c: '#2b3680', e: '#b9c3ff' }
   };
   var EXTRA = [{ c: '#d6338a', e: '#ffb0d8' }, { c: '#8b6bff', e: '#d3c7ff' }];
   GS.colorDe = function (label, segmentos) {
@@ -236,6 +238,7 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
   var TAU = Math.PI * 2;
 
   function lineas(label) {
+    if (GS.esNoPremio(label)) return ['LA SUERTE', 'SIGUE', 'GIRANDO!'];
     var w = String(label).toUpperCase().split(' ');
     return (w.length > 1 && label.length > 9) ? [w[0], w.slice(1).join(' ')] : [w.join(' ')];
   }
@@ -246,7 +249,7 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
     this.root = root;
     this.res = opt.res || 1200;
     this.accent = opt.accent || '#f7c531';
-    this.seg = (opt.segmentos && opt.segmentos.length) ? opt.segmentos : ['Abanico', 'Seguí participando', 'Gorra', 'Abanico', 'Seguí participando', 'Gorra'];
+    this.seg = (opt.segmentos && opt.segmentos.length) ? opt.segmentos : ['Abanico', 'La suerte sigue girando!', 'Gorra', 'Abanico', 'La suerte sigue girando!', 'Gorra'];
     this.n = this.seg.length;
     this.segDeg = 360 / this.n;
     this.angle = 0;
@@ -457,7 +460,7 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
   Wheel.prototype._target = function (ev) {
     var cand = [], i, key = norm(ev.premio);
     for (i = 0; i < this.n; i++) if (norm(this.seg[i]) === key) cand.push(i);
-    if (!cand.length) for (i = 0; i < this.n; i++) if (norm(this.seg[i]) === NO) cand.push(i);
+    if (!cand.length) for (i = 0; i < this.n; i++) if (GS.esNoPremio(this.seg[i])) cand.push(i);
     if (!cand.length) cand = [0];
     var idx = cand[Math.min(cand.length - 1, Math.floor(ev.r1 * cand.length))];
     var jit = (ev.r2 - 0.5) * 0.7;
@@ -600,7 +603,7 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
     return new Promise(function (res) {
       setTimeout(function () {
         if (b.accion === 'registro') return res({ ok: true, codigo: MARCA.slice(0, 3).toUpperCase() + '-' + Math.floor(1000 + Math.random() * 9000), nombre: b.nombre, premio: '', ya: false, ahora: Date.now() });
-        var pool = CFG.segmentos || ['Abanico', 'Seguí participando', 'Gorra'];
+        var pool = CFG.segmentos || ['Abanico', 'La suerte sigue girando!', 'Gorra'];
         res({ ok: true, ya: false, id: 'demo', premio: pool[Math.floor(Math.random() * pool.length)], r1: Math.random(), r2: Math.random(), inicio: Date.now() + 4000, dur: 7000, hold: 9000, ahora: Date.now() });
       }, 500);
     });
@@ -684,11 +687,11 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
   /* ---- Resultado ---- */
   function finalizar(celebrar) {
     var gana = !GS.esNoPremio(st.premio), p = String(st.premio || '');
-    $('fK').textContent = gana ? '¡Ganaste!' : 'Seguí participando';
+    $('fK').textContent = gana ? '¡Ganaste!' : 'La suerte sigue girando!';
     $('fT').textContent = gana ? (/a$/i.test(p) ? 'Una ' : 'Un ') + p : '¡Gracias por jugar, ' + primerNombre(st.nombre) + '!';
     $('fN').textContent = gana ? 'Mostrá esta pantalla en el stand de ' + MARCA + ' para retirar tu premio.'
       : 'Esta vez no hubo premio. Acercate al stand de ' + MARCA + ' y conocé las novedades.';
-    $('pNom').textContent = st.nombre; $('pCod').textContent = st.codigo; $('pPr').textContent = p;
+    $('pNom').textContent = st.nombre; $('pCod').textContent = st.codigo; $('pPr').textContent = GS.verPremio(p);
     $('pPr').style.display = p ? 'block' : 'none';
     document.body.classList.toggle('gana', gana);
     ver('s-fin');

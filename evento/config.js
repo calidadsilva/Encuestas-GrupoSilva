@@ -6,5 +6,5 @@ window.EVENTO_CONFIG = {
   evento: 'Evento 25/11',
   // Segmentos de la ruleta (de arriba, en sentido horario). Deben coincidir con los premios de la hoja "Premios".
   segmentosReposo: ['GWM', 'Changan', 'JMEV', 'Triumph', 'Benelli', 'Morbidelli'],
-  segmentos: ['Abanico', 'Seguí participando', 'Gorra', 'Abanico', 'Seguí participando', 'Gorra']
+  segmentos: ['Abanico', 'La suerte sigue girando!', 'Gorra', 'Abanico', 'La suerte sigue girando!', 'Gorra']
 };
