@@ -74,7 +74,7 @@ function limpiarPruebas() {
   if (p.getLastRow() > 1) p.getRange(2, 5, p.getLastRow() - 1, 1).setValue(0);
   PropertiesService.getScriptProperties().deleteAllProperties();
   var c = CacheService.getScriptCache();
-  MARCAS.forEach(function (m) { c.removeAll(['n_' + m, 'q_' + m]); });
+  MARCAS.forEach(function (m) { c.removeAll(['n_' + m, 'q_' + m, 'b_' + m, 'w_' + m]); });
 }
 
 /* ---------- Entrada web ---------- */
@@ -100,7 +100,10 @@ function doGet(e) {
   var cache = CacheService.getScriptCache();
   var total = cache.get('n_' + marca);
   if (total === null) { total = contar(marca); cache.put('n_' + marca, String(total), 21600); }
-  return json({ ok: true, total: Number(total), cola: leerCola(cache, marca, Date.now()), ahora: Date.now() });
+  var bien = null, gan = [];
+  try { bien = JSON.parse(cache.get('b_' + marca) || 'null'); } catch (x) {}
+  try { gan = JSON.parse(cache.get('w_' + marca) || '[]'); } catch (x) {}
+  return json({ ok: true, total: Number(total), cola: leerCola(cache, marca, Date.now()), bien: bien, gan: gan, ahora: Date.now() });
 }
 
 /* ---------- Registro ---------- */
@@ -127,6 +130,7 @@ function registrar(d) {
                 limpio(d.plazo, 40), '', false, '', limpio(d.evento, 60)]);
   sh.getRange(sh.getLastRow(), C.ENTREG).insertCheckboxes();
   sumarContador(marca);
+  CacheService.getScriptCache().put('b_' + marca, JSON.stringify({ id: codigo, n: nombreCorto(nombre), t: Date.now() }), 600);
   return { ok: true, codigo: codigo, nombre: nombre, premio: '', ya: false, ahora: Date.now() };
 }
 
@@ -160,6 +164,12 @@ function girar(d) {
   };
   cola.push(ev);
   cache.put('q_' + marca, JSON.stringify(cola), 600);
+  if (premio !== NO_PREMIO) {
+    var gan = [];
+    try { gan = JSON.parse(cache.get('w_' + marca) || '[]'); } catch (x) {}
+    gan.unshift({ n: ev.nombre, p: premio, f: inicio + DUR_MS });
+    cache.put('w_' + marca, JSON.stringify(gan.slice(0, 10)), 21600);
+  }
   return respuestaGiro(ev, false);
 }
 
