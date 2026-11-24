@@ -2,7 +2,7 @@
 // Pegá entre las comillas la URL de la aplicación web de Apps Script (termina en /exec).
 // Mientras scriptUrl esté vacío, la página funciona en MODO PRUEBA y no guarda datos.
 window.EVENTO_CONFIG = {
-  scriptUrl: '',
+  scriptUrl: 'https://script.google.com/macros/s/AKfycbxHbO_k-lZ-MIRF0bS9OtF2fABzP714zjP3Z6T_Y78c3bVGdSPLloh1tw771tEcZGts/exec',
   evento: 'Evento 25/11',
   // Segmentos de la ruleta (de arriba, en sentido horario). Deben coincidir con los premios de la hoja "Premios".
   segmentos: ['Abanico', 'Seguí participando', 'Gorra', 'Abanico', 'Seguí participando', 'Gorra']
