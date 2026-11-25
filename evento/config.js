@@ -6,5 +6,7 @@ window.EVENTO_CONFIG = {
   evento: 'Evento 25/11',
   // Segmentos de la ruleta (de arriba, en sentido horario). Deben coincidir con los premios de la hoja "Premios".
   segmentosReposo: ['GWM', 'Changan', 'JMEV', 'Triumph', 'Benelli', 'Morbidelli'],
-  segmentos: ['Abanico', 'La suerte sigue girando!', 'Gorra', 'Abanico', 'La suerte sigue girando!', 'Gorra']
+  segmentos: ['Abanico', 'La suerte sigue girando!', 'Gorra', 'Abanico', 'La suerte sigue girando!', 'Gorra'],
+  // Usuario de Instagram que aparece en la foto con marco y en el texto al compartir (ej.: '@gruposilva'). Vacío = no se muestra.
+  instagram: ''
 };
