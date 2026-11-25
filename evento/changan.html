@@ -848,7 +848,7 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
     x.save(); x.shadowColor = 'rgba(0,0,0,.45)'; x.shadowBlur = 30; frr(x, lx, ly, lw, lh, 34); x.fillStyle = '#fff'; x.fill(); x.restore();
     if (F.logo.naturalWidth) { var ih = 150, iw = F.logo.naturalWidth * ih / F.logo.naturalHeight; if (iw > lw - 50) { iw = lw - 50; ih = F.logo.naturalHeight * iw / F.logo.naturalWidth; } x.drawImage(F.logo, (W - iw) / 2, ly + (lh - ih) / 2, iw, ih); }
     /* foto */
-    var fx = 70, fy = ly + lh + 40, fw = W - 140, fh = F.fmt === 'post' ? 760 : 1180;
+    var fx = 70, fy = ly + lh + 40, fw = W - 140, fh = F.fmt === 'post' ? (CFG.instagram ? 700 : 760) : 1180;
     x.save(); x.shadowColor = 'rgba(47,123,255,.7)'; x.shadowBlur = 50; frr(x, fx, fy, fw, fh, 40); x.fillStyle = '#000'; x.fill(); x.restore();
     x.save(); frr(x, fx, fy, fw, fh, 40); x.clip();
     if (F.img) { var k = Math.max(fw / F.img.width, fh / F.img.height), w = F.img.width * k, h = F.img.height * k; x.drawImage(F.img, fx + (fw - w) / 2, fy + (fh - h) / 2.6, w, h); }
@@ -873,7 +873,7 @@ body.gana .fin h2{background:linear-gradient(90deg,var(--sun),#fff0b0 55%,var(--
     var l1 = 'PRESENTE EN EL STAND DE ' + MARCA.toUpperCase(), y2 = ty + fs + 30;
     var f1 = fajustar(x, l1, '600', 40, W - 140); x.fillStyle = '#eaf0ff'; x.fillText(l1, W / 2, y2 + f1);
     x.font = '700 ' + f1 + 'px "Chakra Petch",sans-serif'; x.fillStyle = FYE; x.fillText('EN T - CONNECT', W / 2, y2 + f1 * 2.25);
-    if (CFG.instagram) { x.font = '600 30px "Chakra Petch",sans-serif'; x.fillStyle = '#8f9cd0'; x.fillText(CFG.instagram, W / 2, y2 + f1 * 2.25 + 56); }
+    if (CFG.instagram) { x.font = '600 34px "Chakra Petch",sans-serif'; x.fillStyle = '#c4cde8'; x.fillText(CFG.instagram, W / 2, y2 + f1 * 2.25 + 56); }
     var bw = W / 3; [FBL, FYE, FRD].forEach(function (col, j) { x.fillStyle = col; x.fillRect(j * bw, H - 16, bw + 1, 16); });
   }
   function fabrir(file) {
