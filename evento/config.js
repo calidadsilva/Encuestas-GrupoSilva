@@ -8,5 +8,5 @@ window.EVENTO_CONFIG = {
   segmentosReposo: ['GWM', 'Changan', 'JMEV', 'Triumph', 'Benelli', 'Morbidelli'],
   segmentos: ['Abanico', 'La suerte sigue girando!', 'Gorra', 'Abanico', 'La suerte sigue girando!', 'Gorra'],
   // Usuario de Instagram que aparece en la foto con marco y en el texto al compartir (ej.: '@gruposilva'). Vacío = no se muestra.
-  instagram: ''
+  instagram: '@gwmgruposilva'
 };
