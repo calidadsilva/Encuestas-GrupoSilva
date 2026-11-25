@@ -16,7 +16,7 @@
  * ANTES DEL EVENTO: ejecutar "limpiarPruebas" para borrar los registros de prueba y reiniciar contadores.
  *
  * PREMIOS: hoja Premios, un bloque por marca. Stock = unidades disponibles. Peso = probabilidad relativa
- * (peso 4 sale el doble que peso 2). Cuando Entregados llega a Stock, ese premio deja de salir.
+ * (con 8/8/4, cada 20 giros salen exactamente 8, 8 y 4). Cuando Entregados llega a Stock, ese premio deja de salir.
  * No cambiar los nombres de los premios: tienen que coincidir con los de la ruleta (config.js).
  */
 
@@ -177,27 +177,42 @@ function respuestaGiro(ev, ya) {
   return { ok: true, ya: ya, id: ev.id, premio: ev.premio, r1: ev.r1, r2: ev.r2, inicio: ev.inicio, dur: ev.dur, hold: ev.hold, ahora: Date.now() };
 }
 
+/* Sorteo con "bolsa": se arma una bolsa con tantos boletos por premio como su Peso (8 Abanico, 8 Gorra,
+   4 La suerte sigue girando = 20 boletos), se mezcla y se saca de a uno. Así cada 20 giros salen exactamente
+   8 abanicos, 8 gorras y 4 "la suerte sigue girando", en orden al azar. Si se cambian los pesos o se agota
+   un premio, la bolsa se rearma sola. */
 function sortear(ss, marca) {
   var sh = ss.getSheetByName(HOJA_PREMIOS), n = sh.getLastRow() - 1;
   if (n < 1) return NO_PREMIO;
-  var filas = sh.getRange(2, 1, n, 5).getValues(), disp = [], total = 0;
+  var filas = sh.getRange(2, 1, n, 5).getValues(), disp = {}, firma = [];
   filas.forEach(function (r, i) {
-    var nom = String(r[1]).trim(), stock = Number(r[2]) || 0, peso = Number(r[3]) || 0, ent = Number(r[4]) || 0;
+    var nom = String(r[1]).trim(), stock = Number(r[2]) || 0, peso = Math.round(Number(r[3]) || 0), ent = Number(r[4]) || 0;
     if (String(r[0]).trim().toLowerCase() !== marca.toLowerCase() || !nom || peso <= 0) return;
     if (nom !== NO_PREMIO && ent >= stock) return;
-    disp.push({ fila: i + 2, nom: nom, peso: peso, ent: ent });
-    total += peso;
+    disp[nom] = { fila: i + 2, peso: Math.min(peso, 100), ent: ent };
+    firma.push(nom + ':' + disp[nom].peso);
   });
-  if (!total) return NO_PREMIO;
-  var x = Math.random() * total;
-  for (var i = 0; i < disp.length; i++) {
-    x -= disp[i].peso;
-    if (x < 0 || i === disp.length - 1) {
-      if (disp[i].nom !== NO_PREMIO) sh.getRange(disp[i].fila, 5).setValue(disp[i].ent + 1);
-      return disp[i].nom;
-    }
+  if (!firma.length) return NO_PREMIO;
+  firma = firma.join('|');
+  var props = PropertiesService.getScriptProperties(), key = 'bolsa_' + marca.toLowerCase().replace(/[^a-z0-9]/g, ''), bolsa = null;
+  try { bolsa = JSON.parse(props.getProperty(key) || 'null'); } catch (x) {}
+  if (!bolsa || bolsa.firma !== firma) bolsa = { firma: firma, b: [] };
+  var elegido = null;
+  while (!elegido) {
+    if (!bolsa.b.length) bolsa.b = armarBolsa(disp);
+    var nom = bolsa.b.pop();
+    if (disp[nom]) elegido = nom;            /* si ese premio se agotó, se saltea el boleto */
   }
-  return NO_PREMIO;
+  props.setProperty(key, JSON.stringify(bolsa));
+  if (elegido !== NO_PREMIO) sh.getRange(disp[elegido].fila, 5).setValue(disp[elegido].ent + 1);
+  return elegido;
+}
+
+function armarBolsa(disp) {
+  var b = [];
+  Object.keys(disp).forEach(function (nom) { for (var i = 0; i < disp[nom].peso; i++) b.push(nom); });
+  for (var i = b.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = b[i]; b[i] = b[j]; b[j] = t; }
+  return b;
 }
 
 /* ---------- Utilidades ---------- */
